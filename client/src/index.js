@@ -5,6 +5,8 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+const baseURL = process.env.REACT_APP_BASE_URL;
+console.log('BASE_URL:', baseURL);
 root.render(
   <React.StrictMode>
     <App />
