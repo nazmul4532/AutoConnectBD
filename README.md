@@ -1,5 +1,5 @@
 ## AutoConnectBD
-AutoConnectBD s your one-stop destination for all your car maintenance needs, seamlessly integrating the power of MERN stack technology. With a sleek and intuitive interface, we offer a comprehensive suite of services, parts, and expert advice to keep your vehicle running smoothly. 
+AutoConnectBD is your one-stop destination for all your car maintenance needs, seamlessly integrating the power of MERN stack technology. With a sleek and intuitive interface, we offer a comprehensive suite of services, parts, and expert advice to keep your vehicle running smoothly. 
 
 ## How to Run?!?
 
