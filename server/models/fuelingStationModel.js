@@ -7,6 +7,9 @@ const fuelingStationSchema = new mongoose.Schema({
   contact: { type: String },
   fuels: [{ type: String }],
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  isVerified: { type: Boolean, default: false },
+  verificationToken: { type: String },
+  verificationTokenExpiry: { type: Date },
 });
 
 module.exports = mongoose.model('FuelingStation', fuelingStationSchema);

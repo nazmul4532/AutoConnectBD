@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 require('dotenv').config();
 
 
@@ -10,8 +11,7 @@ const app = express();
 // Middleware
 app.use(bodyParser.json());
 app.use(cors());
-
-
+app.use(cookieParser());
 
 // Middleware to parse JSON bodies
 app.use(express.json());
@@ -26,8 +26,8 @@ const fuelingStationRoutes = require('./routes/fuelingStationRoutes');
 // // Route middleware
 app.use('/api/auth', authRoutes);
 app.use('/api/customers', customerRoutes);
-// app.use('/api/workshops', workshopRoutes);
-// app.use('/api/fueling-stations', fuelingStationRoutes);
+app.use('/api/workshops', workshopRoutes);
+app.use('/api/fueling-stations', fuelingStationRoutes);
 // app.use('/api/appointments', appointmentRoutes);
 
 

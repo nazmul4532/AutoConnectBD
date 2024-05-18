@@ -12,7 +12,7 @@ const updateCustomerProfile = async (req, res) => {
 
     // Check if the customer exists
     if (!customer) {
-      return res.status(404).json({ msg: 'Customer not found' });
+      return res.status(404).json({ msg: 'Customer not faound' });
     }
 
     // Update customer profile data
