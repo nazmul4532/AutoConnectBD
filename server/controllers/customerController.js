@@ -29,4 +29,17 @@ const updateCustomerProfile = async (req, res) => {
   }
 };
 
-module.exports = { updateCustomerProfile };
+const getHello = async (req, res) => {
+  try {
+    res.status(200).json({
+      msg: 'Hello from the customer controller',
+      email: req.customer.email,
+    });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ msg: 'Server Error' });
+  }
+};
+
+
+module.exports = { getHello, updateCustomerProfile };

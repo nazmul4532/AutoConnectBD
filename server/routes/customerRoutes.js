@@ -2,10 +2,11 @@
 
 const express = require('express');
 const router = express.Router();
-const authMiddleware = require('../middleware/authMiddleware');
-const { updateCustomerProfile } = require('../controllers/customerController');
+const {authCustomerMiddleware} = require('../middleware/authMiddleware');
+const {getHello, updateCustomerProfile } = require('../controllers/customerController');
 
 // Update customer profile route
-router.put('/profile', authMiddleware, updateCustomerProfile);
+router.put('/profile', authCustomerMiddleware, updateCustomerProfile);
+router.get('/hello',authCustomerMiddleware, getHello);
 
 module.exports = router;

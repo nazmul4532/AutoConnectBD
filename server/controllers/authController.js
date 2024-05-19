@@ -76,7 +76,7 @@ const customerEmailVerification = async (req, res) => {
     });
 
     if (!customer) {
-      return res.redirect(`${process.env.CLIENT_URL}/auth/customer/signin?token=expired`);
+      return res.redirect(`${CLIENT_URL}/auth/customer/signin?token=expired`);
     }
 
     customer.isVerified = true;
@@ -85,10 +85,10 @@ const customerEmailVerification = async (req, res) => {
 
     await customer.save();
 
-    res.redirect(`${process.env.CLIENT_URL}/auth/customer/signin?token=verified`);
+    res.redirect(`${CLIENT_URL}/auth/customer/signin?token=verified`);
   } catch (err) {
     console.error(err.message);
-    res.redirect(`${process.env.CLIENT_URL}/auth/customer/signin?token=error`);
+    res.redirect(`${CLIENT_URL}/auth/customer/signin?token=error`);
   }
 };
 
@@ -109,7 +109,8 @@ const customerSignIn = async (req, res) => {
 
     const payload = {
       customer: {
-        id: customer.id,
+        email : email,
+        role: 'customer',
       },
     };
 
