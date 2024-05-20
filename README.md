@@ -6,14 +6,16 @@ AutoConnectBD is your one-stop destination for all your car maintenance needs, s
 ### Backend (Node.js/Express):
 Inside the server folder, run:
 ```bash
-yarn install
+yarn
+yarn dev
 ```
 Copy and paste the appropriate .env file for the backend here as well
 
 ### Frontend (Node.js/React):
 Inside the client folder, run:
 ```bash
-yarn install
+yarn
+yarn dev
 ```
 Copy and paste the appropriate .env file for the frontend here as well
 
