@@ -9,6 +9,20 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const bgColor = "bg-theme-red";
 
+  useEffect(() => { 
+    const queryParams = new URLSearchParams(window.location.search);
+    const tokenParam = queryParams.get('token');
+    if (tokenParam) {
+      if(tokenParam === 'verified') {
+        toast.success("Successfully verified the email. You may now Log In.");
+      } else if (tokenParam === 'error'){
+        toast.error("Error verifying email. Please try again Later");
+      } else if (tokenParam === 'reset') {
+        toast.success("Password reset successfully. You may now Log In.");
+      }
+    }
+  }, []);
+
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
   };
