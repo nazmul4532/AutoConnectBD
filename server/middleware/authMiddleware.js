@@ -9,22 +9,18 @@ const authCustomerMiddleware = (req, res, next) => {
     console.error('No token provided');
     return res.status(401).json({ msg: 'No token, authorization denied' });
   }
+  const token = authHeader.split(' ')[1];
 
-  const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7, authHeader.length).trimLeft() : authHeader;
-
-
-  console.log("hello");
-  const decoded = jwt.verify(token, JWT_SECRET);
-  req.customer = decoded.customer;
-  console.log(decoded.customer);
-  
   try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    req.customer = decoded.customer;
+    console.log(decoded.customer);
     if (decoded.customer.role != 'customer') {
       return res.status(401).json({ msg: 'User is not a customer' });
     }
     next();
   } catch (err) {
-    res.status(401).json({ msg: 'Token Uhmm is not valid' });
+    res.status(401).json({ msg: 'Token is not valid' });
   }
 };
   

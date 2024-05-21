@@ -116,7 +116,10 @@ const customerSignIn = async (req, res) => {
 
     jwt.sign(payload, JWT_SECRET, { expiresIn: '1h' }, (err, token) => {
       if (err) throw err;
-      res.json({ token });
+      res.status(200).json({
+        msg: 'Customer signed in successfully',
+        access_token: token,
+      });
     });
   } catch (err) {
     console.error(err.message);

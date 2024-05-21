@@ -6,6 +6,9 @@ import "./App.css";
 // component imports
 import LoginPage from "./components/LoginPage/LoginPage";
 
+console.log(import.meta.env.VITE_APP_API_URL);
+console.log(import.meta.env.VITE_APP_BASE_URL);
+
 function App() {
   return (
     <BrowserRouter>
