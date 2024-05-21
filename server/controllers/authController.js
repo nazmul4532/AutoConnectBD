@@ -94,6 +94,7 @@ const customerEmailVerification = async (req, res) => {
 
 
 const customerSignIn = async (req, res) => {
+  // console.log("Attempting Log In");
   try {
     const { email, password } = req.body;
 

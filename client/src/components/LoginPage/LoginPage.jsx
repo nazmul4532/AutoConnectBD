@@ -26,7 +26,7 @@ const LoginPage = () => {
     try {
       e.preventDefault();
 
-      const res = await fetch("/api/login", {
+      const res = await fetch(`${import.meta.env.VITE_APP_API_URL}/api/auth/customer/signin`, {
         method: "POST",
         body: JSON.stringify({ email, password }),
         headers: {
@@ -36,7 +36,7 @@ const LoginPage = () => {
 
       if (!res.ok) {
         console.log("Error logging in");
-        toast.error("Error logging in");
+        // toast.error("Error logging in");
         throw new Error("Error logging in");
       }
 
