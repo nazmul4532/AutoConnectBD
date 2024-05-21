@@ -33,7 +33,7 @@ const getHello = async (req, res) => {
   try {
     res.status(200).json({
       msg: 'Hello from the customer controller',
-      email: req.customer.email,
+      email: req.user.email,
     });
   } catch (err) {
     console.error(err.message);

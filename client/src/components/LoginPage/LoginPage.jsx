@@ -17,8 +17,8 @@ const LoginPage = () => {
         toast.success("Successfully verified the email. You may now Log In.");
       } else if (tokenParam === 'error'){
         toast.error("Error verifying email. Please try again Later");
-      } else if (tokenParam === 'reset') {
-        toast.success("Password reset successfully. You may now Log In.");
+      } else if (tokenParam === 'expired') {
+        toast.error("The token seems to have expired. Try again Later.");
       }
     }
   }, []);

@@ -155,7 +155,7 @@ const workshopSignUp = async (req, res) => {
     const verificationTokenExpiry = Date.now() + 3600000; // 1 hour
 
     const newWorkshop = new Workshop({
-      username,
+      name: username,
       email,
       password: hashedPassword,
       location: location,
