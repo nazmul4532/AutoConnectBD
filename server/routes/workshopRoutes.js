@@ -4,13 +4,11 @@ const router = express.Router();
 const workshopController = require('../controllers/workshopController');
 const authMiddleware = require('../middleware/authMiddleware');
 
-// // Register a new workshop
-// router.post('/workshops', authMiddleware, workshopController.registerWorkshop);
+const {authWorkshopMiddleware} = require('../middleware/authMiddleware');
+const {getHello, updateWorkshopProfile } = require('../controllers/workshopController');
 
-// // Get workshop details
-// router.get('/workshops/:id', authMiddleware, workshopController.getWorkshopDetails);
-
-// // Update workshop details
-// router.put('/workshops/:id', authMiddleware, workshopController.updateWorkshopDetails);
+// Update customer profile route
+router.put('/profile', authWorkshopMiddleware, updateWorkshopProfile);
+router.get('/hello',authWorkshopMiddleware, getHello);
 
 module.exports = router;

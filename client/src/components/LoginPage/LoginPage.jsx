@@ -9,6 +9,20 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const bgColor = "bg-theme-red";
 
+  useEffect(() => { 
+    const queryParams = new URLSearchParams(window.location.search);
+    const tokenParam = queryParams.get('token');
+    if (tokenParam) {
+      if(tokenParam === 'verified') {
+        toast.success("Successfully verified the email. You may now Log In.");
+      } else if (tokenParam === 'error'){
+        toast.error("Error verifying email. Please try again Later");
+      } else if (tokenParam === 'expired') {
+        toast.error("The token seems to have expired. Try again Later.");
+      }
+    }
+  }, []);
+
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
   };
