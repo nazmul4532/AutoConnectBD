@@ -30,6 +30,8 @@ app.use('/api/workshops', workshopRoutes);
 app.use('/api/fueling-stations', fuelingStationRoutes);
 // app.use('/api/appointments', appointmentRoutes);
 
+app.use('/api/product', require('./routes/productRoutes'));
+
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI)
