@@ -30,16 +30,6 @@ exports.isCustomer = (req, res, next) => {
   next();
 };
 
-exports.isCustomer = (req, res, next) => {
-  if (req.user.role != "customer") {
-    return res.status(401).json({
-      msg: "User is not a customer. Does not have access to this endpoint",
-    });
-  }
-
-  next();
-};
-
 exports.isWorkshop = (req, res, next) => {
   if (req.user.role != "workshop") {
     return res.status(401).json({
