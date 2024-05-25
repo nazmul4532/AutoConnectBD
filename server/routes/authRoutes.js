@@ -4,7 +4,9 @@ const {
   userSignUp,
   userSignIn,
   userEmailVerification,
+  whoAmI
 } = require("../controllers/authController");
+
 
 //customer auth routes
 router.post("/signup", userSignUp);

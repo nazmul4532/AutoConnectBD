@@ -9,18 +9,8 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const bgColor = "bg-theme-red";
 
-  useEffect(() => { 
-    const queryParams = new URLSearchParams(window.location.search);
-    const tokenParam = queryParams.get('token');
-    if (tokenParam) {
-      if(tokenParam === 'verified') {
-        toast.success("Successfully verified the email. You may now Log In.");
-      } else if (tokenParam === 'error'){
-        toast.error("Error verifying email. Please try again Later");
-      } else if (tokenParam === 'expired') {
-        toast.error("The token seems to have expired. Try again Later.");
-      }
-    }
+  useEffect(() => {
+    // try to get access_token from cookies
   }, []);
 
   const handleEmailChange = (e) => {
@@ -36,38 +26,44 @@ const LoginPage = () => {
   };
 
   const handleSubmit = async (e) => {
-    localStorage.setItem("user", "");
     try {
       e.preventDefault();
 
-      const res = await fetch(`${import.meta.env.VITE_APP_API_URL}/api/auth/customer/signin`, {
-        method: "POST",
-        body: JSON.stringify({ email, password }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!res.ok) {
-        console.log("Error logging in");
-        // toast.error("Error logging in");
-        throw new Error("Error logging in");
-      }
+      const res = await fetch(
+        `${import.meta.env.VITE_APP_API_URL}/api/auth/signin`,
+        {
+          method: "POST",
+          body: JSON.stringify({ email, password }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       const data = await res.json();
-      const user = data.user;
+      console.log(data);
+      if (!res.ok) {
+        if ((data.msg = "Invalid Credentials")) {
+          toast.error(data.msg);
+        } else {
+          throw new Error("Error logging in");
+        }
+      } else {
+        const user = data.user;
+        const accessToken = data.access_token;
 
-      // Save user object in localStorage
-      localStorage.setItem("user", JSON.stringify(user));
+        // Save user object in localStorage
+        localStorage.setItem("user", JSON.stringify(user));
+        localStorage.setItem("accessToken", JSON.stringify(accessToken));
+        toast.success("Successfully logged in");
+        console.log("Successfully logged in");
 
-      toast.success("Successfully logged in");
-      console.log("Successfully logged in");
-
-      // Redirect to dashboard
-      window.location.href = "/dashboard";
+        // Redirect to dashboard
+        window.location.href = "/dashboard";
+      }
     } catch (error) {
       console.error("Error:", error);
-      toast.error("Error logging in");
+      toast.error("Server Error");
     }
   };
 
@@ -169,7 +165,7 @@ const LoginPage = () => {
               </button>
               <div className="text-center p-3">
                 <a
-                  href="/register"
+                  href="/signup"
                   className="text-sm text-gray-600 hover:underline hover:text-gray-950"
                 >
                   Don't have an account?{" "}

@@ -5,6 +5,7 @@ import "./App.css";
 
 // component imports
 import LoginPage from "./components/LoginPage/LoginPage";
+import SignupPage from "./components/SignupPage/SignupPage";
 
 console.log(import.meta.env.VITE_APP_API_URL);
 console.log(import.meta.env.VITE_APP_BASE_URL);
@@ -13,8 +14,9 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/customer/login" element={<LoginPage />} />
-        <Route path="/" element={<Navigate to="/customer/login" />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
+        <Route path="/" element={<Navigate to="/login" />} /> 
       </Routes>
     </BrowserRouter>
   );
