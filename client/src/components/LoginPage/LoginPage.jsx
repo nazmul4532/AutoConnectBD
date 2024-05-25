@@ -9,10 +9,6 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const bgColor = "bg-theme-red";
 
-  useEffect(() => {
-    // try to get access_token from cookies
-  }, []);
-
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
   };
