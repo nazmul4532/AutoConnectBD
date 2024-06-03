@@ -9,6 +9,19 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const bgColor = "bg-theme-red";
 
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(window.location.search);
+    const tokenParam = queryParams.get("token");
+    if(tokenParam==="verified") {
+      toast.success("You Account has been verified. Please login to continue.");
+    }else if(tokenParam==="expired") {
+      toast.error("Verification link has expired. Please request a new link.");
+    }else if(tokenParam==="invalid"){
+      toast.error("Invalid verification link. Please request a new link.")
+    }
+  }, []);
+
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
   };
@@ -46,12 +59,14 @@ const LoginPage = () => {
       } else {
         const user = data.user;
         const accessToken = data.access_token;
+        //Remove whatever data was in localStorage
+        localStorage.removeItem("user");
+        localStorage.removeItem("accessToken");
 
         // Save user object in localStorage
         localStorage.setItem("user", JSON.stringify(user));
         localStorage.setItem("accessToken", JSON.stringify(accessToken));
         toast.success("Successfully logged in");
-        console.log("Successfully logged in");
 
         // Redirect to dashboard
         window.location.href = "/dashboard";
