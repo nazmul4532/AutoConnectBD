@@ -38,7 +38,6 @@ const ForgotPasswordPage = () => {
       });
       const data = await res.json();
       console.log(data);
-
     } catch (error) {
       console.error("Error:", error);
       toast.error("Server Error");
@@ -46,15 +45,19 @@ const ForgotPasswordPage = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-50">
+    <div className="relative flex justify-center items-center min-h-screen">
+      <div className="absolute inset-0 bg-login-bg bg-cover bg-center z-0"></div>
+      <div className="absolute inset-0 bg-theme-gray opacity-80 z-0"></div>
       <ToastContainer />
-      <div className="lg:p-36 md:p-52 sm:p-20 p-8 w-full lg:w-1/2">
-        <div className="mt-4 shadow-md rounded-lg text-left">
+      <div className="relative lg:p-36 md:p-52 sm:p-20 p-8 w-full lg:w-1/2 z-10">
+        <div className="bg-gray-50 mt-4 shadow-md rounded-lg text-left">
           <div className={`${bgColor} h-2 rounded-t-lg`}></div>
           <h2 className="text-left text-2xl font-bold mt-4 pt-6 px-12">
-            Forgot Password Form
+            Forgot Password
           </h2>
-          <a className="text-left text-sm px-12">Please enter the email linked to your account!</a>
+          <a className="text-left text-sm px-12">
+            Please enter your account email
+          </a>
           <form
             onSubmit={handleSubmit}
             className="bg-gray-50 shadow-md rounded-lg pb-12 px-12 pt-6 mb-4"
@@ -86,6 +89,15 @@ const ForgotPasswordPage = () => {
                 Submit
               </button>
             </div>
+            <div className="text-center p-3">
+                <a
+                  href="/login"
+                  className="text-sm text-gray-600 hover:underline hover:text-gray-950"
+                >
+                  Remember your password?{" "}
+                  <span className={`font-bold`}>Log in here!</span>
+                </a>
+              </div>
           </form>
         </div>
       </div>

@@ -15,10 +15,9 @@ const ResetPasswordPage = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-//   const [role, setRole] = useState("");
+  //   const [role, setRole] = useState("");
   const bgColor = "bg-theme-red";
   const navigate = useNavigate();
-
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
   };
@@ -27,9 +26,9 @@ const ResetPasswordPage = () => {
     setConfirmPassword(e.target.value);
   };
 
-//   const handleRoleChange = (e) => {
-//     setRole(e.target.value);
-//   };
+  //   const handleRoleChange = (e) => {
+  //     setRole(e.target.value);
+  //   };
 
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -102,10 +101,12 @@ const ResetPasswordPage = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-50">
+    <div className="relative flex justify-center items-center min-h-screen">
+      <div className="absolute inset-0 bg-login-bg bg-cover bg-center z-0"></div>
+      <div className="absolute inset-0 bg-theme-gray opacity-80 z-0"></div>
       <ToastContainer />
-      <div className="lg:p-36 md:p-52 sm:p-20 p-8 w-full lg:w-1/2">
-        <div className="mt-4 shadow-md rounded-lg text-left">
+      <div className="relative lg:p-36 md:p-52 sm:p-20 p-8 w-full lg:w-1/2 z-10">
+        <div className="bg-gray-50 mt-4 shadow-md rounded-lg text-left">
           <div className={`${bgColor} h-2 rounded-t-lg`}></div>
           <h2 className="text-left text-2xl font-bold mt-4 pt-6 px-12">
             Reset Password
@@ -115,7 +116,6 @@ const ResetPasswordPage = () => {
             onSubmit={handleSubmit}
             className="bg-gray-50 shadow-md rounded-lg pb-12 px-12 pt-6 mb-4"
           >
-            
             <div className="mb-4 relative">
               <label
                 htmlFor="password"
