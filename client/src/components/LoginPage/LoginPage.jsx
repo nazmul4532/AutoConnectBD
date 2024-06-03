@@ -9,16 +9,16 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const bgColor = "bg-theme-red";
 
-  useEffect(() => { 
+  useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
-    const tokenParam = queryParams.get('token');
+    const tokenParam = queryParams.get("token");
     if (tokenParam) {
-      if(tokenParam === 'verified') {
+      if (tokenParam === "verified") {
         toast.success("Successfully verified the email. You may now Log In.");
-      } else if (tokenParam === 'error'){
-        toast.error("Error verifying email. Please try again Later");
-      } else if (tokenParam === 'expired') {
-        toast.error("The token seems to have expired. Try again Later.");
+      } else if (tokenParam === "error") {
+        toast.error("Error verifying email. Please try again later.");
+      } else if (tokenParam === "expired") {
+        toast.error("The token seems to have expired. Try again later.");
       }
     }
   }, []);
@@ -40,30 +40,29 @@ const LoginPage = () => {
     try {
       e.preventDefault();
 
-      const res = await fetch(`${import.meta.env.VITE_APP_API_URL}/api/auth/customer/signin`, {
-        method: "POST",
-        body: JSON.stringify({ email, password }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_APP_API_URL}/api/auth/customer/signin`,
+        {
+          method: "POST",
+          body: JSON.stringify({ email, password }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       if (!res.ok) {
         console.log("Error logging in");
-        // toast.error("Error logging in");
         throw new Error("Error logging in");
       }
 
       const data = await res.json();
       const user = data.user;
 
-      // Save user object in localStorage
       localStorage.setItem("user", JSON.stringify(user));
 
       toast.success("Successfully logged in");
-      console.log("Successfully logged in");
 
-      // Redirect to dashboard
       window.location.href = "/dashboard";
     } catch (error) {
       console.error("Error:", error);
@@ -72,10 +71,12 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-50">
+    <div className="relative flex justify-center items-center min-h-screen">
+      <div className="absolute inset-0 bg-login-bg bg-cover bg-center z-0"></div>
+      <div className="absolute inset-0 bg-theme-gray opacity-80 z-0"></div>
       <ToastContainer />
-      <div className="lg:p-36 md:p-52 sm:p-20 p-8 w-full lg:w-1/2">
-        <div className="mt-4 shadow-md rounded-lg text-left">
+      <div className="relative lg:p-36 md:p-52 sm:p-20 p-8 w-full lg:w-1/2 z-10">
+        <div className="bg-gray-50 mt-4 shadow-md rounded-lg text-left">
           <div className={`${bgColor} h-2 rounded-t-lg`}></div>
           <h2 className="text-left text-2xl font-bold mt-4 pt-6 px-12">
             Log In To Your Account
@@ -144,7 +145,7 @@ const LoginPage = () => {
                   type="checkbox"
                   id="remember"
                   name="remember"
-                  className={`rounded`}
+                  className="rounded"
                 />
                 <label
                   htmlFor="remember"
@@ -173,7 +174,7 @@ const LoginPage = () => {
                   className="text-sm text-gray-600 hover:underline hover:text-gray-950"
                 >
                   Don't have an account?{" "}
-                  <span className={`font-bold`}>Sign up here!</span>
+                  <span className="font-bold">Sign up here!</span>
                 </a>
               </div>
             </div>
