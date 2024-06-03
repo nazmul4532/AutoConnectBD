@@ -16,13 +16,12 @@ function App() {
     const checkLoggedIn = async () => {
       // Retrieve access token from localStorage
       const accessToken = localStorage.getItem("accessToken");
-
       if (accessToken) {
         try {
           // Send GET request to the server to check if user is logged in
           const response = await fetch("http://localhost:8000/api/user", {
             headers: {
-              Authorization: `Bearer ${accessToken}`,
+              Authorization: `Bearer ${JSON.parse(accessToken)}`,
             },
           });
 

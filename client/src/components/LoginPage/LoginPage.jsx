@@ -22,9 +22,9 @@ const LoginPage = () => {
   };
 
   const handleSubmit = async (e) => {
+    e.preventDefault();
+    toast.success("Form Submitted. Please wait...");
     try {
-      e.preventDefault();
-
       const res = await fetch(
         `${import.meta.env.VITE_APP_API_URL}/api/auth/signin`,
         {
