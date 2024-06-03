@@ -1,23 +1,73 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import "./App.css";
 
-// component imports
+// Component imports
 import LoginPage from "./components/LoginPage/LoginPage";
-
-console.log(import.meta.env.VITE_APP_API_URL);
-console.log(import.meta.env.VITE_APP_BASE_URL);
+import SignupPage from "./components/SignupPage/SignupPage";
+import DashboardPage from "./components/DashboardPage/DashboardPage";
+import ForgotPasswordPage from "./components/ForgotPasswordPage/ForgotPasswordPage";
+import ResetPasswordPage from "./components/ResetPasswordPage/ResetPasswordPage";
+import NotFound from "./components/NotFound"; // Import the custom 404 component
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const checkLoggedIn = async () => {
+      // Retrieve access token from localStorage
+      const accessToken = localStorage.getItem("accessToken");
+      if (accessToken) {
+        try {
+          // Send GET request to the server to check if user is logged in
+          const response = await fetch("http://localhost:8000/api/user", {
+            headers: {
+              Authorization: `Bearer ${JSON.parse(accessToken)}`,
+            },
+          });
+
+          const data = await response.json();
+          setIsLoggedIn(data.isLoggedIn);
+        } catch (error) {
+          console.error("Error checking if user is logged in:", error);
+        }
+      }
+    };
+
+    checkLoggedIn();
+  }, []);
+
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/customer/login" element={<LoginPage />} />
-        <Route path="/" element={<Navigate to="/customer/login" />} />
+        <Route
+          path="/login"
+          element={isLoggedIn ? <Navigate to="/dashboard" /> : <LoginPage />}
+        />
+        <Route
+          path="/signup"
+          element={isLoggedIn ? <Navigate to="/dashboard" /> : <SignupPage />}
+        />
+        <Route
+          path="/"
+          element={isLoggedIn ? <PrivateRoute /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/dashboard"
+          element={isLoggedIn ? <DashboardPage /> : <Navigate to="/login" />}
+        />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );
 }
+
+const PrivateRoute = () => {
+  // Render private route component here
+  return <div>Private Route Component</div>;
+};
 
 export default App;

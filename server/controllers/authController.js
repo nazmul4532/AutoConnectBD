@@ -14,7 +14,6 @@ const {
   SERVER_URL,
 } = process.env; // Ensure these are in your .env file
 
-
 exports.userSignUp = async (req, res) => {
   try {
     const { name, email, password, role, location, contact } = req.body;
@@ -119,12 +118,18 @@ exports.userSignIn = async (req, res) => {
       return res.status(400).json({ msg: "Invalid Credentials" });
     }
 
-    const { password: _, isVerified, verificationToken, verificationTokenExpiry, ...payload } = user.toObject();
-
+    const {
+      password: _,
+      isVerified,
+      verificationToken,
+      verificationTokenExpiry,
+      ...payload
+    } = user.toObject();
 
     jwt.sign(payload, JWT_SECRET, { expiresIn: "1h" }, (err, token) => {
       if (err) throw err;
       res.status(200).json({
+        user: payload,
         msg: "User signed in successfully",
         access_token: token,
       });

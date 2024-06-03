@@ -1,11 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const {
-    userSignUp,
-    userSignIn,
-    userEmailVerification,
-    userPasswordReset,
-    userPasswordResetRequestEmail,
+  userSignUp,
+  userSignIn,
+  userEmailVerification,
+  whoAmI,
+  userPasswordReset,
+  userPasswordResetRequestEmail,
 } = require("../controllers/authController");
 
 //customer auth routes

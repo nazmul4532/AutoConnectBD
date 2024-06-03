@@ -41,3 +41,12 @@ exports.getHello = async (req, res) => {
     res.status(500).json({ msg: "Server Error" });
   }
 };
+
+exports.getProfile = async (req, res) => {
+  try {
+    res.status(200).send({ user: req.user, isLoggedIn: true });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Server Error.");
+  }
+};
