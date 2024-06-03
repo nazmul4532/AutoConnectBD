@@ -8,6 +8,7 @@
   --theme-gray: #444444;
   --theme-white: #ededed;
   --theme-red: #da0037;
+  --theme-blue: #3B8EA5;
   --border-radius: 10px;
 }
 
@@ -25,5 +26,5 @@ body::-webkit-scrollbar-track {
 }
 
 body::-webkit-scrollbar-thumb {
-  background-color: #fed885;
+  background-color: var(--theme-red);
 }
