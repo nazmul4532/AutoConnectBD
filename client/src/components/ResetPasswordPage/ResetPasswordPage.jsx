@@ -184,6 +184,15 @@ const ResetPasswordPage = () => {
                 </div>
               </div>
             </div>
+            <div className="text-center p-3">
+                <a
+                  href="/login"
+                  className="text-sm text-gray-600 hover:underline hover:text-gray-950"
+                >
+                  Remembered Your Password?{" "}
+                  <span className={`font-bold`}>Log in here!</span>
+                </a>
+              </div>
             <div className="pt-6">
               <button
                 type="submit"
