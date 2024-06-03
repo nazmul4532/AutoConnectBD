@@ -42,6 +42,12 @@ const ResetPasswordPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+<<<<<<< Updated upstream
+=======
+    // toast.success("I am Here");
+    const queryParams = new URLSearchParams(window.location.search);
+    const tokenParam = queryParams.get("token");
+>>>>>>> Stashed changes
 
     // Validation for empty fields
     if (!password) {
@@ -71,7 +77,13 @@ const ResetPasswordPage = () => {
 
     try {
       const res = await fetch(
+<<<<<<< Updated upstream
         `${import.meta.env.VITE_APP_API_URL}/api/auth/signup`,
+=======
+        `${
+          import.meta.env.VITE_APP_API_URL
+        }/api/auth/reset-password?token=${tokenParam}`,
+>>>>>>> Stashed changes
         {
           method: "POST",
           body: JSON.stringify({ password, role }),
@@ -80,6 +92,24 @@ const ResetPasswordPage = () => {
           },
         }
       );
+<<<<<<< Updated upstream
+=======
+
+      if (res.status === 200) {
+        Swal.fire({
+          title: "Resetted Password Successfully!",
+          text: "You may now login with your new password.",
+          icon: "success",
+          confirmButtonText: "OK",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            navigate("/login"); // Redirect to the login page
+          }
+        });
+      } else {
+        toast.error("Error resetting password. Please try again..");
+      }
+>>>>>>> Stashed changes
 
       // if (!res.ok) {
       //   console.log("Error signing up");

@@ -16,6 +16,10 @@ const {
 
 exports.userSignUp = async (req, res) => {
   try {
+<<<<<<< Updated upstream
+=======
+    console.log("Signing User Up");
+>>>>>>> Stashed changes
     const { name, email, password, role, location, contact } = req.body;
     // name, email, password, role is required
 

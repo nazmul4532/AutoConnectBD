@@ -29,7 +29,11 @@ const ForgotPasswordPage = () => {
         `${import.meta.env.VITE_APP_API_URL}/api/auth/signin`,
         {
           method: "POST",
+<<<<<<< Updated upstream
           body: JSON.stringify({ email, password }),
+=======
+          body: JSON.stringify({ email }),
+>>>>>>> Stashed changes
           headers: {
             "Content-Type": "application/json",
           },
@@ -113,14 +117,14 @@ const ForgotPasswordPage = () => {
               </button>
             </div>
             <div className="text-center p-3">
-                <a
-                  href="/login"
-                  className="text-sm text-gray-600 hover:underline hover:text-gray-950"
-                >
-                  Remember your password?{" "}
-                  <span className={`font-bold`}>Log in here!</span>
-                </a>
-              </div>
+              <a
+                href="/login"
+                className="text-sm text-gray-600 hover:underline hover:text-gray-950"
+              >
+                Remember your password?{" "}
+                <span className={`font-bold`}>Log in here!</span>
+              </a>
+            </div>
           </form>
         </div>
       </div>
