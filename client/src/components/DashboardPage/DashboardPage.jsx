@@ -32,6 +32,7 @@ const DashboardPage = () => {
   }
 
   const handleLogout = () => {
+    localStorage.removeItem("user");
     localStorage.removeItem("accessToken");
     Swal.fire({
       title: "Logout Sucessful",
@@ -39,9 +40,7 @@ const DashboardPage = () => {
       icon: "success",
       confirmButtonText: "OK",
     }).then((result) => {
-      if (result.isConfirmed) {
-        navigate("/login"); // Redirect to the login page
-      }
+      window.location.reload();
     });
   };
 

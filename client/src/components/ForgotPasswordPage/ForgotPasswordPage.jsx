@@ -2,61 +2,43 @@ import React, { useState, useEffect } from "react";
 import { MdEmail, MdLock, MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Swal from "sweetalert2";
 
 const ForgotPasswordPage = () => {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
   const bgColor = "bg-theme-red";
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
   };
 
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  };
-
-  const toggleShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    toast.success("Form Submitted. Please wait...");
     try {
       const res = await fetch(
-        `${import.meta.env.VITE_APP_API_URL}/api/auth/signin`,
+        `${import.meta.env.VITE_APP_API_URL}/api/auth/request-reset-password`,
         {
           method: "POST",
-          body: JSON.stringify({ email, password }),
+          body: JSON.stringify({ email}),
           headers: {
             "Content-Type": "application/json",
           },
         }
       );
 
+      Swal.fire({
+        title: "Forgotten password request sent successfully!",
+        text: "Please check your email to verify your account.",
+        icon: "success",
+        confirmButtonText: "OK",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate("/login"); // Redirect to the login page
+        }
+      });
       const data = await res.json();
       console.log(data);
-      if (!res.ok) {
-        if ((data.msg = "Invalid Credentials")) {
-          toast.error(data.msg);
-        } else {
-          throw new Error("Error with the form submission. Please try again.");
-        }
-      } else {
-        const user = data.user;
-        const accessToken = data.access_token;
 
-        // Save user object in localStorage
-        localStorage.setItem("user", JSON.stringify(user));
-        localStorage.setItem("accessToken", JSON.stringify(accessToken));
-        toast.success("Successfully submitted the request. Please check your email for the reset link.");
-        console.log("Successfully submitted the request. Please check your email for the reset link.");
-
-        // Redirect to dashboard
-        window.location.href = "/dashboard";
-      }
     } catch (error) {
       console.error("Error:", error);
       toast.error("Server Error");

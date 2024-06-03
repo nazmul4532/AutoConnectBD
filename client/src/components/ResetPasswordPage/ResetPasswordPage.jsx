@@ -19,14 +19,6 @@ const ResetPasswordPage = () => {
   const bgColor = "bg-theme-red";
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const queryParams = new URLSearchParams(window.location.search);
-    const tokenParam = queryParams.get("token");
-  }, []);
-
-
-
-
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
   };
@@ -45,6 +37,10 @@ const ResetPasswordPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // toast.success("I am Here");
+    const queryParams = new URLSearchParams(window.location.search);
+    const tokenParam = queryParams.get("token");
+
 
     // Validation for empty fields
     if (!password) {
@@ -63,46 +59,45 @@ const ResetPasswordPage = () => {
       toast.error("Passwords do not match");
       return;
     }
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;
-    if (!passwordRegex.test(password)) {
-        toast.error("Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character");
-        return;
-    }
+    // const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;
+    // if (!passwordRegex.test(password)) {
+    //     toast.error("Password must contain either one uppercase, lowercase, number, or special character.");
+    //     return;
+    // }
 
     try {
+      console.log(tokenParam);
       const res = await fetch(
-        `${import.meta.env.VITE_APP_API_URL}/api/auth/signup`,
+        `${import.meta.env.VITE_APP_API_URL}/api/auth/reset-password?token=${tokenParam}`,
         {
           method: "POST",
-          body: JSON.stringify({ password, role }),
+          body: JSON.stringify({ password }),
           headers: {
             "Content-Type": "application/json",
           },
         }
       );
+      
+      if (res.status === 200) {
+        Swal.fire({
+            title: "Resetted Password Successfully!",
+            text: "You may now login with your new password.",
+            icon: "success",
+            confirmButtonText: "OK",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              navigate("/login"); // Redirect to the login page
+            }
+          });
+      }else{
+        toast.error("Error resetting password. Please try again..");
+      }
 
-      // if (!res.ok) {
-      //   console.log("Error signing up");
-      //   throw new Error("Error signing up");
-      // }
-
-      Swal.fire({
-        title: "Account Created Successfully!",
-        text: "Please check your email to verify your account",
-        icon: "success",
-        confirmButtonText: "OK",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          navigate("/login"); // Redirect to the login page
-        }
-      });
-
-      const data = await res.json();
       // console.log(data);
       // toast.success("Successfully signed up");
     } catch (error) {
       console.error("Error:", error);
-      toast.error("Error signing up");
+      toast.error("Error resetting password. Please try again..");
     }
   };
 

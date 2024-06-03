@@ -21,20 +21,6 @@ const SignupPage = () => {
   const bgColor = "bg-theme-red";
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const queryParams = new URLSearchParams(window.location.search);
-    const tokenParam = queryParams.get("token");
-    if (tokenParam) {
-      if (tokenParam === "verified") {
-        toast.success("Successfully verified the email. You may now Log In.");
-      } else if (tokenParam === "error") {
-        toast.error("Error verifying email. Please try again Later");
-      } else if (tokenParam === "expired") {
-        toast.error("The token seems to have expired. Try again Later.");
-      }
-    }
-  }, []);
-
   const handleNameChange = (e) => {
     setName(e.target.value);
   };
@@ -87,6 +73,11 @@ const SignupPage = () => {
       toast.error("Passwords do not match");
       return;
     }
+    // const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;
+    // if (!passwordRegex.test(password)) {
+    //     toast.error("Password must contain either one uppercase, lowercase, number, or special character.");
+    //     return;
+    // }
 
     try {
       const res = await fetch(
