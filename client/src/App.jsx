@@ -7,6 +7,8 @@ import "./App.css";
 import LoginPage from "./components/LoginPage/LoginPage";
 import SignupPage from "./components/SignupPage/SignupPage";
 import DashboardPage from "./components/DashboardPage/DashboardPage";
+import ForgotPasswordPage from "./components/ForgotPasswordPage/ForgotPasswordPage";
+import ResetPasswordPage from "./components/ResetPasswordPage/ResetPasswordPage";
 import NotFound from "./components/NotFound"; // Import the custom 404 component
 
 function App() {
@@ -55,6 +57,8 @@ function App() {
           path="/dashboard"
           element={isLoggedIn ? <DashboardPage /> : <Navigate to="/login" />}
         />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
