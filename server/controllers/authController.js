@@ -16,10 +16,7 @@ const {
 
 exports.userSignUp = async (req, res) => {
   try {
-<<<<<<< Updated upstream
-=======
     console.log("Signing User Up");
->>>>>>> Stashed changes
     const { name, email, password, role, location, contact } = req.body;
     // name, email, password, role is required
 
@@ -28,6 +25,7 @@ exports.userSignUp = async (req, res) => {
       if (!existingUser.isVerified) {
         await User.deleteOne({ email });
       } else {
+        console.log("User already exists");
         return res.status(400).json({ msg: "User already exists" });
       }
     }
@@ -73,7 +71,7 @@ exports.userSignUp = async (req, res) => {
     };
 
     await transporter.sendMail(mailOptions);
-
+    console.log("Successfully Sent Verification mail");
     res.status(200).json({ msg: "User verification email sent" });
   } catch (err) {
     console.error(err.message);
@@ -100,10 +98,10 @@ exports.userEmailVerification = async (req, res) => {
 
     await user.save();
 
-    res.redirect(`${CLIENT_URL}/user/login?token=verified`);
+    res.redirect(`${CLIENT_URL}/login?token=verified`);
   } catch (err) {
     console.error(err.message);
-    res.redirect(`${CLIENT_URL}/user/login?token=error`);
+    res.redirect(`${CLIENT_URL}/login?token=error`);
   }
 };
 
@@ -145,11 +143,13 @@ exports.userSignIn = async (req, res) => {
 };
 
 exports.userPasswordResetRequestEmail = async (req, res) => {
+  // console.log("Requesting Password Reset");
   const { email } = req.body;
   try {
-    console.log(email);
+    // console.log(email);
     const user = await User.findOne({ email });
     if (!user) {
+      console.log("User not found");
       return res.status(404).json({ msg: "User not found" });
     }
 
@@ -166,7 +166,7 @@ exports.userPasswordResetRequestEmail = async (req, res) => {
       },
     });
 
-    const resetUrl = `${process.env.SERVER_URL}/api/auth/reset-password?token=${user.resetPasswordToken}`;
+    const resetUrl = `${process.env.CLIENT_URL}/reset-password?token=${user.resetPasswordToken}`;
     
     const mailOptions = {
       from: `AutoConnectBD <${EMAIL_USER}>`,
@@ -187,11 +187,12 @@ exports.userPasswordResetRequestEmail = async (req, res) => {
 };
 
 exports.userPasswordReset = async (req, res) => {
+  // console.log("Resetting Password");
   const { token } = req.query;
   const { password } = req.body;
 
   try {
-    console.log(token, password);
+    // console.log(token, password);
     const user = await User.findOne({
       resetPasswordToken: token,
       resetPasswordTokenExpiry: { $gt: Date.now() },
@@ -199,7 +200,7 @@ exports.userPasswordReset = async (req, res) => {
 
     if (!user) {
       console.log("Invalid or expired reset token");
-      return res.status(400).redirect(`${CLIENT_URL}/user/login?reset=invalid`);
+      return res.status(400).redirect(`${CLIENT_URL}/login?reset=invalid`);
     }
 
     const salt = await bcrypt.genSalt(10);
@@ -209,9 +210,9 @@ exports.userPasswordReset = async (req, res) => {
     user.resetPasswordTokenExpiry = undefined;
     await user.save();
     console.log("Password reset successful");
-    res.status(201).redirect(`${CLIENT_URL}/user/login?reset=success`);
+    res.status(201).redirect(`${CLIENT_URL}/login?reset=success`);
   } catch (err) {
     console.error(err.message);
-    res.status(400).redirect(`${CLIENT_URL}/user/login?reset=error`);
+    res.status(400).redirect(`${CLIENT_URL}/login?reset=error`);
   }
 };

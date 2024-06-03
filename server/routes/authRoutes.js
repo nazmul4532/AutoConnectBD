@@ -14,6 +14,6 @@ router.post("/signup", userSignUp);
 router.post("/signin", userSignIn);
 router.get("/verify-email", userEmailVerification);
 router.post("/request-reset-password", userPasswordResetRequestEmail);
-router.get("/reset-password", userPasswordReset);
+router.post("/reset-password", userPasswordReset);
 
 module.exports = router;
