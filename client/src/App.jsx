@@ -10,6 +10,7 @@ import DashboardPage from "./components/DashboardPage/DashboardPage";
 import ForgotPasswordPage from "./components/ForgotPasswordPage/ForgotPasswordPage";
 import ResetPasswordPage from "./components/ResetPasswordPage/ResetPasswordPage";
 import NotFound from "./components/NotFound"; // Import the custom 404 component
+import ProductManufacturerDashboard from "./components/ProductManufacturerDashboard/ProductManufacturerDashboard";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -59,6 +60,10 @@ function App() {
         />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
+        <Route
+          path="/product-manufacturer/dashboard"
+          element={<ProductManufacturerDashboard />}
+        />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

@@ -40,7 +40,6 @@ const ResetPasswordPage = () => {
     const queryParams = new URLSearchParams(window.location.search);
     const tokenParam = queryParams.get("token");
 
-
     // Validation for empty fields
     if (!password) {
       toast.error("Password is required");
@@ -76,7 +75,7 @@ const ResetPasswordPage = () => {
           },
         }
       );
-      
+
       if (res.status === 200) {
         Swal.fire({
             title: "Resetted Password Successfully!",

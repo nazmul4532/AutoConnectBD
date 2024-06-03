@@ -16,7 +16,7 @@ const {
 
 exports.userSignUp = async (req, res) => {
   try {
-    // console.log("Signing User Up");
+    console.log("Signing User Up");
     const { name, email, password, role, location, contact } = req.body;
     // name, email, password, role is required
 

@@ -99,14 +99,14 @@ const ForgotPasswordPage = () => {
               </button>
             </div>
             <div className="text-center p-3">
-                <a
-                  href="/login"
-                  className="text-sm text-gray-600 hover:underline hover:text-gray-950"
-                >
-                  Remember your password?{" "}
-                  <span className={`font-bold`}>Log in here!</span>
-                </a>
-              </div>
+              <a
+                href="/login"
+                className="text-sm text-gray-600 hover:underline hover:text-gray-950"
+              >
+                Remember your password?{" "}
+                <span className={`font-bold`}>Log in here!</span>
+              </a>
+            </div>
           </form>
         </div>
       </div>
