@@ -6,6 +6,7 @@ import {
   AiOutlineSetting,
   AiOutlineLogin,
   AiOutlineProfile,
+  AiOutlineHistory,
 } from "react-icons/ai"; // Import icons from react-icons
 import Sidebar from "./components/Sidebar";
 import Table from "./components/Table";
@@ -74,6 +75,11 @@ const ProductManufacturerDashboard = () => {
       title: "Dashboard",
       link: "/product-manufacturer/dashboard",
       icon: <AiOutlineDashboard />,
+    },
+    {
+      title: "Stock History",
+      link: "/product-manufacturer/stock-history",
+      icon: <AiOutlineHistory />,
     },
     { title: "Profile", link: "/product-manufacturer/profile", icon: <AiOutlineProfile /> },
     { title: "Settings", link: "/product-manufacturer/settings", icon: <AiOutlineSetting /> },

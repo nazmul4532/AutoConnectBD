@@ -1,9 +1,12 @@
 import { MdAdd, MdRemove } from "react-icons/md";
 import React, { useState } from "react";
 import Pagination from "./Pagination";
+import QuantityModal from "./QuantityModal";
 
 const Table = ({ data, headers }) => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
   const itemsPerPage = 5; // Define the number of items per page
 
   // Pagination logic
@@ -17,6 +20,17 @@ const Table = ({ data, headers }) => {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = Math.min(startIndex + itemsPerPage, data.length);
   const paginatedData = data.slice(startIndex, endIndex);
+
+  const handleIncreaseClick = (item) => {
+    setSelectedItem(item);
+    setIsModalOpen(true);
+  };
+
+  const handleConfirmIncrease = (quantity) => {
+    // Handle the increase logic here
+    setIsModalOpen(false);
+    console.log(`Increase quantity for ${selectedItem.name} by ${quantity}`);
+  };
 
   return (
     <div className="overflow-x-auto shadow-md sm:rounded-lg ml-64 mt-20 p-15 rounded-lg">
@@ -63,15 +77,14 @@ const Table = ({ data, headers }) => {
                   </button>
                   <input
                     type="number"
-                    id={`product_${index}`}
                     className="bg-gray-50 w-14 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-2.5 py-1 text-center"
-                    placeholder="1"
-                    defaultValue={item.quantity}
-                    required
+                    value={item.quantity}
+                    disabled
                   />
                   <button
                     className="inline-flex items-center justify-center h-6 w-6 p-1 ms-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-full hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 focus:outline-none"
                     type="button"
+                    onClick={() => handleIncreaseClick(item)}
                   >
                     <span className="sr-only">Increase Quantity</span>
                     <MdAdd />
@@ -108,6 +121,12 @@ const Table = ({ data, headers }) => {
         onPageChange={onPageChange}
         itemsPerPage={itemsPerPage}
         totalItems={data.length}
+      />
+      <QuantityModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={handleConfirmIncrease}
+        item={selectedItem}
       />
     </div>
   );
