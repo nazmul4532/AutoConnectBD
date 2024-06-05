@@ -56,6 +56,29 @@ exports.updateProduct = async (req, res) => {
   }
 };
 
+
+//update product quantity
+exports.updateProductQuantity = async (req, res) => {
+  const {quantity} = req.body;
+
+  try {
+    console.log(req.params.id);
+    const product = await Product.findById(req.params.id);
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    if (quantity) product.quantity = quantity;
+
+    await product.save();
+
+    res.status(200).json({ message: "Product quantity updated successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+    console.log(error);
+  }
+};
+
 // Delete an image from a product
 exports.deleteImage = async (req, res) => {
   try {

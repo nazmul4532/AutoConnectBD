@@ -21,9 +21,9 @@ const Table = ({ api, data, headers }) => {
   const totalProducts = pagination.totalProducts || 0;
 
   // Pagination data
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = Math.min(startIndex + itemsPerPage, items.length);
-  const paginatedData = items.slice(startIndex, endIndex);
+  // const startIndex = (currentPage - 1) * itemsPerPage;
+  // const endIndex = Math.min(startIndex + itemsPerPage, totalProducts);
+  // const paginatedData = items.slice(startIndex, endIndex);
   const accessToken = localStorage.getItem("accessToken");
 
   const handleIncreaseClick = (item) => {
@@ -48,7 +48,6 @@ const Table = ({ api, data, headers }) => {
     } else {
       quantity = -parseInt(quantity, 10);
     }
-
     setIsModalOpen(false);
   };
 

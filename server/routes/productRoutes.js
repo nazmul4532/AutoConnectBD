@@ -30,6 +30,13 @@ router.delete(
   productController.deleteProduct
 );
 
+router.patch(
+  "/update_quantity/:id",
+  verifyToken,
+  isCompany,
+  productController.updateProductQuantity
+);
+
 // Decrease the quantity of a product
 router.patch(
   "/decrease_quantity/:id",
