@@ -18,7 +18,7 @@ import{useState, useEffect} from "react";
 
 let data = null;
 
-const ProductManufacturerDashboard = () => {
+const CompanyDashboard = () => {
   // Sample JSON data
   data = [
     {
@@ -116,4 +116,4 @@ const ProductManufacturerDashboard = () => {
   );
 };
 
-export default ProductManufacturerDashboard;
+export default CompanyDashboard;
