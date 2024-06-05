@@ -11,6 +11,7 @@ import ResetPasswordPage from "./components/ResetPasswordPage/ResetPasswordPage"
 import NotFound from "./components/NotFound"; 
 import CompanyDashboard from "./components/CompanyDashboard/CompanyDashboard";
 import LogOutPage from "./components/Logout/LogoutPage";
+import LandingPage from "./components/LandingPage/LandingPage";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -87,6 +88,7 @@ function App() {
           path="/company/dashboard"
           element={ isLoggedIn && role === "company" ? <CompanyDashboard /> : <Navigate to="/login" />}
         />
+        <Route path="/landingPage" element={<LandingPage/>} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

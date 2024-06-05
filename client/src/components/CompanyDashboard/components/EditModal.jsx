@@ -10,7 +10,7 @@ const EditModal = ({ isOpen, onClose, onConfirm, initialProductDetails }) => {
   useEffect(() => {
     if (isOpen && initialProductDetails) {
       setProductName(initialProductDetails.name);
-      setProductPrice(initialProductDetails.unitPrice); 
+      setProductPrice(initialProductDetails.unitPrice);
     }
     if (!isOpen) {
       setProductName("");
