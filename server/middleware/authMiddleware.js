@@ -5,6 +5,7 @@ exports.verifyToken = (req, res, next) => {
   const authHeader = req.header("Authorization");
 
   if (!authHeader) {
+    console.log("No token provided");
     console.error("No token provided");
     return res.status(401).json({ msg: "No token, authorization denied" });
   }
@@ -22,6 +23,7 @@ exports.verifyToken = (req, res, next) => {
 
 exports.isCustomer = (req, res, next) => {
   if (req.user.role != "customer") {
+    console.log("User is not a customer. Does not have access to this endpoint");
     return res.status(401).json({
       msg: "User is not a customer. Does not have access to this endpoint",
     });
@@ -32,6 +34,7 @@ exports.isCustomer = (req, res, next) => {
 
 exports.isWorkshop = (req, res, next) => {
   if (req.user.role != "workshop") {
+    console.log("User is not a workshop. Does not have access to this endpoint");
     return res.status(401).json({
       msg: "User is not a workshop. Does not have access to this endpoint",
     });
@@ -42,6 +45,8 @@ exports.isWorkshop = (req, res, next) => {
 
 exports.isFuelingStation = (req, res, next) => {
   if (req.user.role != "fuelingstation") {
+    console.log("User is not a Fueling Station. Does not have access to this endpoint");
+
     return res.status(401).json({
       msg: "User is not a Fueling Station. Does not have access to this endpoint",
     });
@@ -52,6 +57,7 @@ exports.isFuelingStation = (req, res, next) => {
 
 exports.isCompany = (req, res, next) => {
   if (req.user.role != "company") {
+    console.log("User is not a Company. Does not have access to this endpoint");
     return res.status(401).json({
       msg: "User is not a Company. Does not have access to this endpoint",
     });

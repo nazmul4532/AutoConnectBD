@@ -1,27 +1,30 @@
 import { MdAdd, MdRemove } from "react-icons/md";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Pagination from "./Pagination";
 import QuantityModal from "./QuantityModal";
 
-const Table = ({ data, headers }) => {
+const Table = ({ api, data, headers }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [action, setAction] = useState("increase");
   const [items, setItems] = useState(data); // State to hold the items with updated quantities
   const itemsPerPage = 5; // Define the number of items per page
+  const [pagination, setPagination] = useState({}); // State to hold the pagination data
 
   // Pagination logic
   const onPageChange = (page) => {
     setCurrentPage(page);
   };
 
-  const totalPages = Math.ceil(items.length / itemsPerPage);
+  const totalPages = pagination.totalPages || 1;
+  const totalProducts = pagination.totalProducts || 0;
 
   // Pagination data
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = Math.min(startIndex + itemsPerPage, items.length);
   const paginatedData = items.slice(startIndex, endIndex);
+  const accessToken = localStorage.getItem("accessToken");
 
   const handleIncreaseClick = (item) => {
     setSelectedItem(item);
@@ -46,43 +49,40 @@ const Table = ({ data, headers }) => {
       quantity = -parseInt(quantity, 10);
     }
 
-    //----------Write backend api integration code here------------//
-    // useEffect(() => {
-    //   const getProductData = async (e) => {
-    //     e.preventDefault();
-    //     try {
-    //       const res = await fetch(
-    //         `${import.meta.env.VITE_APP_API_URL}/api/auth/signin`,
-    //         {
-    //           method: "POST",
-    //           body: JSON.stringify({ email, password }),
-    //           headers: {
-    //             "Content-Type": "application/json",
-    //           },
-    //         }
-    //       );
-
-    //       data = await res.json();
-    //       console.log(data);
-    //       if (!res.ok) {
-    //         if ((data.msg = "Invalid Credentials")) {
-    //           toast.error(data.msg);
-    //         } else {
-    //           throw new Error("Error logging in");
-    //         }
-    //       } else {
-    //         //
-    //       }
-    //     } catch (error) {
-    //       console.error("Error:", error);
-    //       toast.error("Server Error");
-    //     }
-    //   };
-    //   getProductData();
-    // }, []);
-
     setIsModalOpen(false);
   };
+
+  
+    //----------Write backend api integration code here------------//
+    const getProductData = async () => {
+      try {
+        // window.alert("I fired");
+        console.log("Fetching Products");
+        console.log(currentPage);
+        const res = await fetch(`${api}?page=${currentPage}&pageSize=${itemsPerPage}`,{
+            headers: {
+              Authorization: `Bearer ${JSON.parse(accessToken)}`,
+            },
+          });
+
+        if (!res.ok) {
+          throw new Error("Error fetching products");
+        }
+
+        const { products, pagination } = await res.json();
+
+        setItems(products);
+        setPagination(pagination);
+        console.log("Products:", products);
+        console.log("Pagination:", pagination);
+      } catch (error) {
+        console.error("Error:", error);
+        toast.error("Server Error");
+      }
+    };
+    useEffect(() => {
+      getProductData();
+    }, [currentPage]);
 
   return (
     <div className="overflow-x-auto shadow-md sm:rounded-lg ml-64 mt-20 p-15 rounded-lg">
@@ -173,7 +173,7 @@ const Table = ({ data, headers }) => {
         totalPages={totalPages}
         onPageChange={onPageChange}
         itemsPerPage={itemsPerPage}
-        totalItems={items.length}
+        totalItems={totalProducts}
       />
       <QuantityModal
         isOpen={isModalOpen}

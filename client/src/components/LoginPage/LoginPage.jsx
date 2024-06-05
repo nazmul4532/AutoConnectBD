@@ -69,7 +69,8 @@ const LoginPage = () => {
         toast.success("Successfully logged in");
 
         // Redirect to dashboard
-        window.location.href = "/dashboard";
+        window.location.href = `/${user.role}/dashboard`;
+        
       }
     } catch (error) {
       console.error("Error:", error);

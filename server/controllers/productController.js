@@ -125,11 +125,15 @@ exports.decreaseQuantity = async (req, res) => {
 };
 
 // Get products with pagination and optional search parameters
-exports.getProducts = async (req, res) => {
+exports.getCompanyProducts = async (req, res) => {
   // works like search too
   try {
+    console.log("Fetching Products");
     const { page = 1, pageSize = 5, keyword, type, company } = req.query;
     const query = {};
+    query.company = req.user;
+    console.log(page);
+    console.log( pageSize);
 
     if (keyword) {
       query.$or = [

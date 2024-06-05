@@ -39,6 +39,6 @@ router.patch(
 );
 
 // Get products with pagination and optional search parameters
-router.get("/", productController.getProducts);
+router.get("/", verifyToken, productController.getCompanyProducts);
 
 module.exports = router;

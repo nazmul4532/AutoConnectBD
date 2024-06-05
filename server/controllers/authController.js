@@ -127,7 +127,7 @@ exports.userSignIn = async (req, res) => {
       verificationTokenExpiry,
       ...payload
     } = user.toObject();
-
+    
     jwt.sign(payload, JWT_SECRET, { expiresIn: "1h" }, (err, token) => {
       if (err) throw err;
       res.status(200).json({

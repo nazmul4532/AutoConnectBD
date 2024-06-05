@@ -11,7 +11,7 @@ const DashboardPage = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       const accessToken = localStorage.getItem("accessToken");
-      const response = await fetch("http://localhost:8000/api/user", {
+      const response = await fetch(`${import.meta.env.VITE_APP_API_URL}/api/user`, {
         headers: {
           Authorization: `Bearer ${JSON.parse(accessToken)}`,
         },
@@ -34,14 +34,17 @@ const DashboardPage = () => {
   const handleLogout = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("accessToken");
-    Swal.fire({
-      title: "Logout Sucessful",
-      // text: "Please check your email to verify your account",
-      icon: "success",
-      confirmButtonText: "OK",
-    }).then((result) => {
-      window.location.reload();
-    });
+    window.location.href = "/login";
+    // Commented Out to Keep things consistent
+    // Swal.fire({
+    //   title: "Logout Sucessful",
+    //   // text: "Please check your email to verify your account",
+    //   icon: "success",
+    //   confirmButtonText: "OK",
+    // }).then((result) => {
+    //   window.location.reload();
+    // });
+    
   };
 
   return (

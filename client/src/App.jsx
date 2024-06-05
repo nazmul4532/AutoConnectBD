@@ -11,14 +11,23 @@ import ForgotPasswordPage from "./components/ForgotPasswordPage/ForgotPasswordPa
 import ResetPasswordPage from "./components/ResetPasswordPage/ResetPasswordPage";
 import NotFound from "./components/NotFound"; // Import the custom 404 component
 import ProductManufacturerDashboard from "./components/ProductManufacturerDashboard/ProductManufacturerDashboard";
+import LogOutPage from "./components/Logout/LogoutPage";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [role, setRole] = useState("");
 
   useEffect(() => {
     const checkLoggedIn = async () => {
       // Retrieve access token from localStorage
       const accessToken = localStorage.getItem("accessToken");
+      const user = localStorage.getItem("user");
+
+      if(user){
+        setRole(JSON.parse(user).role);
+        console.log(role);
+      }
+
       if (accessToken) {
         try {
           // Send GET request to the server to check if user is logged in
@@ -27,7 +36,6 @@ function App() {
               Authorization: `Bearer ${JSON.parse(accessToken)}`,
             },
           });
-
           const data = await response.json();
           setIsLoggedIn(data.isLoggedIn);
         } catch (error) {
@@ -44,25 +52,41 @@ function App() {
       <Routes>
         <Route
           path="/login"
-          element={isLoggedIn ? <Navigate to="/dashboard" /> : <LoginPage />}
+          element={isLoggedIn ? <Navigate to={`/${role}/dashboard`} /> : <LoginPage />}
         />
         <Route
           path="/signup"
-          element={isLoggedIn ? <Navigate to="/dashboard" /> : <SignupPage />}
+          element={isLoggedIn ? <Navigate to={`/${role}/dashboard`} /> : <SignupPage />}
         />
+        {/* <Route
+          path="/dashboard"
+          element={isLoggedIn ? <Navigate to="/dashboard" /> : <SignupPage />}
+        /> */}
         <Route
           path="/"
           element={isLoggedIn ? <PrivateRoute /> : <Navigate to="/login" />}
         />
-        <Route
+          <Route
+          path="/logout"
+          element={<LogOutPage/>}
+        />
+        {/* <Route
           path="/dashboard"
           element={isLoggedIn ? <DashboardPage /> : <Navigate to="/login" />}
-        />
+        /> */}
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route
-          path="/product-manufacturer/dashboard"
-          element={<ProductManufacturerDashboard />}
+          path="/customer/dashboard"
+          element={ isLoggedIn && role === "customer" ? <DashboardPage /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/workshop/dashboard"
+          element={ isLoggedIn && role === "workshop" ? <DashboardPage /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/company/dashboard"
+          element={ isLoggedIn && role === "company" ? <ProductManufacturerDashboard /> : <Navigate to="/login" />}
         />
         <Route path="*" element={<NotFound />} />
       </Routes>

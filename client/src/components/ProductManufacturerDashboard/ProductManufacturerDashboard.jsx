@@ -14,6 +14,7 @@ import NavigationBar from "./components/NavBar";
 import Breadcrumb from "./components/Breadcrumb";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import{useState, useEffect} from "react";
 
 let data = null;
 
@@ -70,42 +71,6 @@ const ProductManufacturerDashboard = () => {
     },
     // Add more items as needed
   ];
-
-  //----------Write backend api integration code here------------//
-  // useEffect(() => {
-  //   const getProductData = async (e) => {
-  //     e.preventDefault();
-  //     try {
-  //       const res = await fetch(
-  //         `${import.meta.env.VITE_APP_API_URL}/api/auth/signin`,
-  //         {
-  //           method: "POST",
-  //           body: JSON.stringify({ email, password }),
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //           },
-  //         }
-  //       );
-
-  //       data = await res.json();
-  //       console.log(data);
-  //       if (!res.ok) {
-  //         if ((data.msg = "Invalid Credentials")) {
-  //           toast.error(data.msg);
-  //         } else {
-  //           throw new Error("Error logging in");
-  //         }
-  //       } else {
-  //         //
-  //       }
-  //     } catch (error) {
-  //       console.error("Error:", error);
-  //       toast.error("Server Error");
-  //     }
-  //   };
-  //   getProductData();
-  // }, []);
-
   // Table headers
   const headers = ["Image", "Product", "Qty in Stock", "Price", "Action"];
 
@@ -144,7 +109,7 @@ const ProductManufacturerDashboard = () => {
         <Sidebar menuItems={menuItems} />
         <div className="flex-grow p-8">
           <Breadcrumb />
-          <Table data={data} headers={headers} />
+          <Table api={`${import.meta.env.VITE_APP_API_URL}/api/product`} data={[]} headers={headers} />
         </div>
       </div>
     </div>
