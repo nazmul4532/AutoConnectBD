@@ -2,6 +2,8 @@ import { MdAdd, MdRemove } from "react-icons/md";
 import React, { useEffect, useState } from "react";
 import Pagination from "./Pagination";
 import QuantityModal from "./QuantityModal";
+import EditModal from "./EditModal"; // Import EditModal
+import { toast } from "react-toastify"; // Assuming you are using react-toastify for notifications
 
 const Table = ({ api, data, headers }) => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -11,6 +13,8 @@ const Table = ({ api, data, headers }) => {
   const [items, setItems] = useState(data); // State to hold the items with updated quantities
   const itemsPerPage = 5; // Define the number of items per page
   const [pagination, setPagination] = useState({}); // State to hold the pagination data
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false); // State for EditModal
+  const [selectedProductIndex, setSelectedProductIndex] = useState(null);
 
   // Pagination logic
   const onPageChange = (page) => {
@@ -20,10 +24,6 @@ const Table = ({ api, data, headers }) => {
   const totalPages = pagination.totalPages || 1;
   const totalProducts = pagination.totalProducts || 0;
 
-  // Pagination data
-  // const startIndex = (currentPage - 1) * itemsPerPage;
-  // const endIndex = Math.min(startIndex + itemsPerPage, totalProducts);
-  // const paginatedData = items.slice(startIndex, endIndex);
   const accessToken = localStorage.getItem("accessToken");
 
   const handleIncreaseClick = (item) => {
@@ -38,7 +38,34 @@ const Table = ({ api, data, headers }) => {
     setIsModalOpen(true);
   };
 
-  const handleConfirmChange = (quantity) => {
+  const handleEditClick = (item) => {
+    setSelectedItem(item);
+    setIsEditModalOpen(true);
+  };
+
+  const handleRemoveClick = async (itemId) => {
+    try {
+      const res = await fetch(`${api}/${itemId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${JSON.parse(accessToken)}`,
+        },
+      });
+
+      if (!res.ok) {
+        throw new Error("Error removing product");
+      }
+
+      // Update the state to remove the item
+      setItems(items.filter((item) => item._id !== itemId));
+      toast.success("Product removed successfully");
+    } catch (error) {
+      console.error("Error:", error);
+      toast.error("Error removing product");
+    }
+  };
+
+  const handleConfirmChange = async (quantity, itemId) => {
     if (!selectedItem || !quantity || quantity <= 0) {
       return;
     }
@@ -49,20 +76,39 @@ const Table = ({ api, data, headers }) => {
       quantity = -parseInt(quantity, 10);
     }
     setIsModalOpen(false);
+    try {
+      console.log(quantity);
+      console.log(itemId);
+    } catch (error) {
+      console.error("Error:", error);
+      toast.error("Server Error");
+    }
   };
 
-  
-    //----------Write backend api integration code here------------//
+  const handleConfirmEdit = async (updatedProduct) => {
+    setIsEditModalOpen(false);
+    try {
+      console.log(updatedProduct);
+      // Add logic to update the product in the state or make API call here
+    } catch (error) {
+      console.error("Error:", error);
+      toast.error("Server Error");
+    }
+  };
+
+  useEffect(() => {
     const getProductData = async () => {
       try {
-        // window.alert("I fired");
         console.log("Fetching Products");
         console.log(currentPage);
-        const res = await fetch(`${api}?page=${currentPage}&pageSize=${itemsPerPage}`,{
+        const res = await fetch(
+          `${api}?page=${currentPage}&pageSize=${itemsPerPage}`,
+          {
             headers: {
               Authorization: `Bearer ${JSON.parse(accessToken)}`,
             },
-          });
+          }
+        );
 
         if (!res.ok) {
           throw new Error("Error fetching products");
@@ -79,9 +125,9 @@ const Table = ({ api, data, headers }) => {
         toast.error("Server Error");
       }
     };
-    useEffect(() => {
-      getProductData();
-    }, [currentPage, itemsPerPage, api, accessToken]);
+
+    getProductData();
+  }, [currentPage, itemsPerPage, api, accessToken]);
 
   return (
     <div className="overflow-x-auto shadow-md sm:rounded-lg ml-64 mt-20 p-15 rounded-lg">
@@ -102,7 +148,7 @@ const Table = ({ api, data, headers }) => {
         <tbody>
           {items.map((item, index) => (
             <tr
-              key={index}
+              key={item._id}
               className={`border-b hover:bg-gray-100 ${
                 index % 2 === 0 ? "bg-theme-blue bg-opacity-15" : "bg-white"
               }`}
@@ -144,23 +190,23 @@ const Table = ({ api, data, headers }) => {
                 </div>
               </td>
               <td className="px-6 py-4 font-semibold text-center">
-                <span className="text-black">{item.price}</span>
+                <span className="text-black">{item.unitPrice}</span>
               </td>
               <td className="px-6 py-4 text-center">
                 <div className="flex justify-center">
                   <button
                     className="text-blue-600 hover:underline"
-                    onClick={() => handleEdit(index)}
+                    onClick={() => handleEditClick(item)}
                   >
                     Edit
                   </button>
                   <span className="mx-2">|</span>
-                  <a
-                    href="#"
+                  <button
                     className="font-medium text-red-600 hover:underline"
+                    onClick={() => handleRemoveClick(item._id)}
                   >
                     Remove
-                  </a>
+                  </button>
                 </div>
               </td>
             </tr>
@@ -180,6 +226,13 @@ const Table = ({ api, data, headers }) => {
         onConfirm={handleConfirmChange}
         itemQuantity={selectedItem?.quantity}
         action={action}
+        itemId={selectedItem?._id}
+      />
+      <EditModal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        onConfirm={handleConfirmEdit}
+        initialProductDetails={selectedItem}
       />
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MdClose, MdOutlineInsertChartOutlined } from "react-icons/md";
 
 const QuantityModal = ({
@@ -7,12 +7,27 @@ const QuantityModal = ({
   onConfirm,
   itemQuantity,
   action,
+  itemId, // Add itemId prop
 }) => {
   const [quantityInput, setQuantityInput] = useState(0);
+  const [error, setError] = useState("");
 
   const handleInputChange = (event) => {
-    setQuantityInput(event.target.value);
+    const value = event.target.valueAsNumber;
+    setQuantityInput(value);
+    if (action === "decrease" && value > itemQuantity) {
+      setError("Cannot decrease by more than the current quantity.");
+    } else {
+      setError("");
+    }
   };
+
+  useEffect(() => {
+    if (!isOpen) {
+      setQuantityInput(0);
+      setError("");
+    }
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -52,10 +67,21 @@ const QuantityModal = ({
                 required
               />
             </div>
+            {error && (
+              <div className="mb-4 text-red-600 font-medium">{error}</div>
+            )}
             <button
               type="button"
               className="bg-green-600 hover:bg-gray-950 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
-              onClick={() => onConfirm(quantityInput)}
+              onClick={() => {
+                if (action === "decrease" && quantityInput > itemQuantity) {
+                  setError(
+                    "Cannot decrease by more than the current quantity."
+                  );
+                } else {
+                  onConfirm(quantityInput, itemId); // Pass itemId to onConfirm
+                }
+              }}
             >
               Confirm {buttonText}
             </button>
