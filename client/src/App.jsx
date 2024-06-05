@@ -6,11 +6,10 @@ import "./App.css";
 // Component imports
 import LoginPage from "./components/LoginPage/LoginPage";
 import SignupPage from "./components/SignupPage/SignupPage";
-import DashboardPage from "./components/DashboardPage/DashboardPage";
 import ForgotPasswordPage from "./components/ForgotPasswordPage/ForgotPasswordPage";
 import ResetPasswordPage from "./components/ResetPasswordPage/ResetPasswordPage";
-import NotFound from "./components/NotFound"; // Import the custom 404 component
-import ProductManufacturerDashboard from "./components/ProductManufacturerDashboard/ProductManufacturerDashboard";
+import NotFound from "./components/NotFound"; 
+import CompanyDashboard from "./components/CompanyDashboard/CompanyDashboard";
 import LogOutPage from "./components/Logout/LogoutPage";
 
 function App() {
@@ -86,7 +85,7 @@ function App() {
         />
         <Route
           path="/company/dashboard"
-          element={ isLoggedIn && role === "company" ? <ProductManufacturerDashboard /> : <Navigate to="/login" />}
+          element={ isLoggedIn && role === "company" ? <CompanyDashboard /> : <Navigate to="/login" />}
         />
         <Route path="*" element={<NotFound />} />
       </Routes>
