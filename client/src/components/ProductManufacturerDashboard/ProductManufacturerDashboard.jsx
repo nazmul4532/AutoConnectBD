@@ -7,15 +7,19 @@ import {
   AiOutlineLogin,
   AiOutlineProfile,
   AiOutlineHistory,
-} from "react-icons/ai"; // Import icons from react-icons
+} from "react-icons/ai";
 import Sidebar from "./components/Sidebar";
 import Table from "./components/Table";
 import NavigationBar from "./components/NavBar";
-import Breadcrumb from "./components/Breadcrumb"; // Import Breadcrumb component
+import Breadcrumb from "./components/Breadcrumb";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+let data = null;
 
 const ProductManufacturerDashboard = () => {
   // Sample JSON data
-  const data = [
+  data = [
     {
       name: "Apple Watch",
       image: "/docs/images/products/apple-watch.png",
@@ -67,6 +71,41 @@ const ProductManufacturerDashboard = () => {
     // Add more items as needed
   ];
 
+  //----------Write backend api integration code here------------//
+  // useEffect(() => {
+  //   const getProductData = async (e) => {
+  //     e.preventDefault();
+  //     try {
+  //       const res = await fetch(
+  //         `${import.meta.env.VITE_APP_API_URL}/api/auth/signin`,
+  //         {
+  //           method: "POST",
+  //           body: JSON.stringify({ email, password }),
+  //           headers: {
+  //             "Content-Type": "application/json",
+  //           },
+  //         }
+  //       );
+
+  //       data = await res.json();
+  //       console.log(data);
+  //       if (!res.ok) {
+  //         if ((data.msg = "Invalid Credentials")) {
+  //           toast.error(data.msg);
+  //         } else {
+  //           throw new Error("Error logging in");
+  //         }
+  //       } else {
+  //         //
+  //       }
+  //     } catch (error) {
+  //       console.error("Error:", error);
+  //       toast.error("Server Error");
+  //     }
+  //   };
+  //   getProductData();
+  // }, []);
+
   // Table headers
   const headers = ["Image", "Product", "Qty in Stock", "Price", "Action"];
 
@@ -81,8 +120,16 @@ const ProductManufacturerDashboard = () => {
       link: "/product-manufacturer/stock-history",
       icon: <AiOutlineHistory />,
     },
-    { title: "Profile", link: "/product-manufacturer/profile", icon: <AiOutlineProfile /> },
-    { title: "Settings", link: "/product-manufacturer/settings", icon: <AiOutlineSetting /> },
+    {
+      title: "Profile",
+      link: "/product-manufacturer/profile",
+      icon: <AiOutlineProfile />,
+    },
+    {
+      title: "Settings",
+      link: "/product-manufacturer/settings",
+      icon: <AiOutlineSetting />,
+    },
     { title: "Logout", link: "/logout", icon: <AiOutlineLogin /> },
   ];
 
@@ -97,8 +144,7 @@ const ProductManufacturerDashboard = () => {
         <Sidebar menuItems={menuItems} />
         <div className="flex-grow p-8">
           <Breadcrumb />
-            <Table data={data} headers={headers} />
-       
+          <Table data={data} headers={headers} />
         </div>
       </div>
     </div>

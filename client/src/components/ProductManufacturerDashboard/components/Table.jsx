@@ -7,6 +7,8 @@ const Table = ({ data, headers }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [action, setAction] = useState("increase");
+  const [items, setItems] = useState(data); // State to hold the items with updated quantities
   const itemsPerPage = 5; // Define the number of items per page
 
   // Pagination logic
@@ -14,22 +16,72 @@ const Table = ({ data, headers }) => {
     setCurrentPage(page);
   };
 
-  const totalPages = Math.ceil(data.length / itemsPerPage);
+  const totalPages = Math.ceil(items.length / itemsPerPage);
 
   // Pagination data
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = Math.min(startIndex + itemsPerPage, data.length);
-  const paginatedData = data.slice(startIndex, endIndex);
+  const endIndex = Math.min(startIndex + itemsPerPage, items.length);
+  const paginatedData = items.slice(startIndex, endIndex);
 
   const handleIncreaseClick = (item) => {
     setSelectedItem(item);
+    setAction("increase");
     setIsModalOpen(true);
   };
 
-  const handleConfirmIncrease = (quantity) => {
-    // Handle the increase logic here
+  const handleDecreaseClick = (item) => {
+    setSelectedItem(item);
+    setAction("decrease");
+    setIsModalOpen(true);
+  };
+
+  const handleConfirmChange = (quantity) => {
+    if (!selectedItem || !quantity || quantity <= 0) {
+      return;
+    }
+
+    if (action === "increase") {
+      quantity = parseInt(quantity, 10);
+    } else {
+      quantity = -parseInt(quantity, 10);
+    }
+
+    //----------Write backend api integration code here------------//
+    // useEffect(() => {
+    //   const getProductData = async (e) => {
+    //     e.preventDefault();
+    //     try {
+    //       const res = await fetch(
+    //         `${import.meta.env.VITE_APP_API_URL}/api/auth/signin`,
+    //         {
+    //           method: "POST",
+    //           body: JSON.stringify({ email, password }),
+    //           headers: {
+    //             "Content-Type": "application/json",
+    //           },
+    //         }
+    //       );
+
+    //       data = await res.json();
+    //       console.log(data);
+    //       if (!res.ok) {
+    //         if ((data.msg = "Invalid Credentials")) {
+    //           toast.error(data.msg);
+    //         } else {
+    //           throw new Error("Error logging in");
+    //         }
+    //       } else {
+    //         //
+    //       }
+    //     } catch (error) {
+    //       console.error("Error:", error);
+    //       toast.error("Server Error");
+    //     }
+    //   };
+    //   getProductData();
+    // }, []);
+
     setIsModalOpen(false);
-    console.log(`Increase quantity for ${selectedItem.name} by ${quantity}`);
   };
 
   return (
@@ -71,6 +123,7 @@ const Table = ({ data, headers }) => {
                   <button
                     className="inline-flex items-center justify-center p-1 me-3 text-sm font-medium h-6 w-6 text-gray-500 bg-white border border-gray-300 rounded-full hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 focus:outline-none"
                     type="button"
+                    onClick={() => handleDecreaseClick(item)}
                   >
                     <span className="sr-only">Decrease Quantity</span>
                     <MdRemove />
@@ -120,13 +173,14 @@ const Table = ({ data, headers }) => {
         totalPages={totalPages}
         onPageChange={onPageChange}
         itemsPerPage={itemsPerPage}
-        totalItems={data.length}
+        totalItems={items.length}
       />
       <QuantityModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        onConfirm={handleConfirmIncrease}
-        item={selectedItem}
+        onConfirm={handleConfirmChange}
+        itemQuantity={selectedItem?.quantity}
+        action={action}
       />
     </div>
   );

@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 import { MdClose, MdOutlineInsertChartOutlined } from "react-icons/md";
 
-const QuantityModal = ({ isOpen, onClose, onConfirm, itemQuantity }) => {
+const QuantityModal = ({
+  isOpen,
+  onClose,
+  onConfirm,
+  itemQuantity,
+  action,
+}) => {
   const [quantityInput, setQuantityInput] = useState(0);
 
   const handleInputChange = (event) => {
@@ -9,6 +15,9 @@ const QuantityModal = ({ isOpen, onClose, onConfirm, itemQuantity }) => {
   };
 
   if (!isOpen) return null;
+
+  const actionText = action === "increase" ? "increase" : "decrease";
+  const buttonText = action === "increase" ? "Increase" : "Decrease";
 
   return (
     <div
@@ -30,7 +39,7 @@ const QuantityModal = ({ isOpen, onClose, onConfirm, itemQuantity }) => {
           <div className="p-6 text-center">
             <MdOutlineInsertChartOutlined className="w-12 h-12 mx-auto mb-4 text-gray-400" />
             <h3 className="mb-5 text-lg font-normal text-gray-500">
-              How many units do you want to increase the stock amount by?
+              How many units do you want to {actionText} the stock amount by?
             </h3>
             <div className="flex justify-center mb-4">
               <input
@@ -48,7 +57,7 @@ const QuantityModal = ({ isOpen, onClose, onConfirm, itemQuantity }) => {
               className="bg-green-600 hover:bg-gray-950 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
               onClick={() => onConfirm(quantityInput)}
             >
-              Confirm
+              Confirm {buttonText}
             </button>
             <button
               type="button"
