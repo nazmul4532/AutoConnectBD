@@ -59,3 +59,14 @@ exports.isCompany = (req, res, next) => {
 
   next();
 };
+
+
+exports.isCustomerOrWorkshop = (req, res, next) => {
+  if (req.user.role != "workshop" || req.user.role != "customer") {
+    return res.status(401).json({
+      msg: "User is not a customer or a workshop. Does not have access to this endpoint",
+    });
+  }
+
+  next();
+};
