@@ -82,7 +82,7 @@ const Table = ({ api, data, headers }) => {
     };
     useEffect(() => {
       getProductData();
-    }, [currentPage]);
+    }, [currentPage, itemsPerPage, api, accessToken]);
 
   return (
     <div className="overflow-x-auto shadow-md sm:rounded-lg ml-64 mt-20 p-15 rounded-lg">
@@ -101,7 +101,7 @@ const Table = ({ api, data, headers }) => {
           </tr>
         </thead>
         <tbody>
-          {paginatedData.map((item, index) => (
+          {items.map((item, index) => (
             <tr
               key={index}
               className={`border-b hover:bg-gray-100 ${
