@@ -89,6 +89,7 @@ const CompanyDashboard = () => {
               formData.append('unitPrice', productDetails.price);
               formData.append('quantity', productDetails.quantity);
               formData.append('image', productDetails.image);
+              formData.append('categories', productDetails.categories);
               // for (let i = 0; i < productDetails.images.length; i++) {
               //   formData.append('images', productDetails.images[i]);
               // }

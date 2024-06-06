@@ -1,17 +1,48 @@
 import React, { useState } from "react";
 import { MdClose, MdAdd } from "react-icons/md";
+import CreatableSelect from "react-select/creatable";
 
-const AddProductModal = ({ isOpen, onClose, onConfirm, api }) => {
+const AddProductModal = ({ isOpen, onClose, onConfirm }) => {
   const [productDetails, setProductDetails] = useState({
     name: "",
     image: "",
     quantity: 0,
     price: "",
+    categories: [],
   });
+
+  const categoryOptions = [
+    { value: "Sedan", label: "Sedan" },
+    { value: "SUV", label: "SUV" },
+    { value: "Truck", label: "Truck" },
+    { value: "Coupe", label: "Coupe" },
+    { value: "Convertible", label: "Convertible" },
+    { value: "Hatchback", label: "Hatchback" },
+    { value: "Minivan", label: "Minivan" },
+    { value: "Electric", label: "Electric" },
+    { value: "Hybrid", label: "Hybrid" },
+    { value: "Engine Parts", label: "Engine Parts" },
+    { value: "Brakes", label: "Brakes" },
+    { value: "Suspension", label: "Suspension" },
+    { value: "Exhaust", label: "Exhaust" },
+    { value: "Tires", label: "Tires" },
+    { value: "Batteries", label: "Batteries" },
+    { value: "Lighting", label: "Lighting" },
+    { value: "Interior", label: "Interior" },
+    { value: "Exterior", label: "Exterior" },
+    // Add more default categories as needed
+  ];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setProductDetails({ ...productDetails, [name]: value });
+  };
+
+  const handleCategoryChange = (newValue) => {
+    setProductDetails({
+      ...productDetails,
+      categories: newValue ? newValue.map((option) => option.value) : [],
+    });
   };
 
   const handleSubmit = (e) => {
@@ -95,6 +126,22 @@ const AddProductModal = ({ isOpen, onClose, onConfirm, api }) => {
                 value={productDetails.quantity}
                 onChange={handleChange}
                 required
+              />
+            </div>
+            <div className="mb-4">
+              <label
+                htmlFor="categories"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Categories
+              </label>
+              <CreatableSelect
+                isMulti
+                name="categories"
+                options={categoryOptions} // Options can be left empty as users can create new ones
+                className="basic-multi-select"
+                classNamePrefix="select"
+                onChange={handleCategoryChange}
               />
             </div>
             <div className="mb-4">

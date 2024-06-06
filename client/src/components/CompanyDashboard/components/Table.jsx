@@ -149,6 +149,7 @@ const Table = ({ api, data, headers }) => {
       formData.append('unitPrice', updatedProduct.price);
       formData.append('quantity', updatedProduct.quantity);
       formData.append('image', updatedProduct.image);
+      formData.append('categories', updatedProduct.categories);
       const res = await fetch(
         `${api}/update/${updatedProduct._id}`,
         {

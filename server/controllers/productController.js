@@ -8,7 +8,8 @@ const configureCloudinary = require('../configs/cloudinaryConfig');
 exports.addProduct = async (req, res) => {
   try {
     configureCloudinary();
-    const { name, category, quantity, description, unitPrice } = req.body;
+    const { name, quantity, description, unitPrice, categories } = req.body;
+    console.log(categories.split(",").map((category) => category.trim()));
 
     const uploadedImages = [];
 
@@ -33,7 +34,7 @@ exports.addProduct = async (req, res) => {
     const product = new Product({
       name,
       img: uploadedImages,
-      category,
+      category: categories.split(",").map((category) => category.trim()),
       quantity,
       description,
       unitPrice,
@@ -51,7 +52,7 @@ exports.addProduct = async (req, res) => {
 // Update a product
 exports.updateProduct = async (req, res) => {
   console.log("Updating Product");
-  const { name, description, img, category, quantity, unitPrice } = req.body;
+  const { name, description, img, categories, quantity, unitPrice } = req.body;
   // console.log(req.body);
   // console.log("files");
   // console.log(req.file);
@@ -64,7 +65,7 @@ exports.updateProduct = async (req, res) => {
 
     if (name) product.name = name;
     if (description) product.description = description;
-
+    product.category = categories.split(",").map((category) => category.trim());
     const uploadedImages = [];
     if (req.file) {
       const uploadResult = await cloudinary.uploader.upload(req.file.path, { folder: 'product-images' });
@@ -72,7 +73,6 @@ exports.updateProduct = async (req, res) => {
       product.img = uploadedImages;
     }    
 
-    if (category) product.category = category;
     if (quantity>=0){ 
       // console.log("Updating Quantity");
       product.quantity = quantity;

@@ -1,21 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { MdClose, MdOutlineEdit } from "react-icons/md";
+import CreatableSelect from "react-select/creatable";
 
 const EditModal = ({ isOpen, onClose, onConfirm, initialProductDetails }) => {
   const [productName, setProductName] = useState("");
   const [productPrice, setProductPrice] = useState(0);
   const [productImage, setProductImage] = useState(null);
+  const [productCategories, setProductCategories] = useState([]);
   const [error, setError] = useState("");
 
   useEffect(() => {
     if (isOpen && initialProductDetails) {
       setProductName(initialProductDetails.name);
       setProductPrice(initialProductDetails.unitPrice);
+      setProductCategories(
+        initialProductDetails.category.map((category) => ({
+          value: category,
+          label: category,
+        }))
+      );
     }
     if (!isOpen) {
       setProductName("");
       setProductPrice(0);
       setProductImage(null);
+      setProductCategories([]);
       setError("");
     }
   }, [isOpen, initialProductDetails]);
@@ -28,8 +37,12 @@ const EditModal = ({ isOpen, onClose, onConfirm, initialProductDetails }) => {
     setProductImage(event.target.files[0]);
   };
 
+  const handleCategoryChange = (newValue) => {
+    setProductCategories(newValue ? newValue : []);
+  };
+
   const handleConfirm = () => {
-    if (!productName || productPrice <= 0) {
+    if (!productName || productPrice <= 0 || productCategories.length === 0) {
       setError("Please fill in all fields with valid values.");
       return;
     }
@@ -38,8 +51,31 @@ const EditModal = ({ isOpen, onClose, onConfirm, initialProductDetails }) => {
       name: productName,
       price: productPrice,
       image: productImage,
+      categories: productCategories.map((category) => category.value),
     });
   };
+
+  const categoryOptions = [
+    { value: "Sedan", label: "Sedan" },
+    { value: "SUV", label: "SUV" },
+    { value: "Truck", label: "Truck" },
+    { value: "Coupe", label: "Coupe" },
+    { value: "Convertible", label: "Convertible" },
+    { value: "Hatchback", label: "Hatchback" },
+    { value: "Minivan", label: "Minivan" },
+    { value: "Electric", label: "Electric" },
+    { value: "Hybrid", label: "Hybrid" },
+    { value: "Engine Parts", label: "Engine Parts" },
+    { value: "Brakes", label: "Brakes" },
+    { value: "Suspension", label: "Suspension" },
+    { value: "Exhaust", label: "Exhaust" },
+    { value: "Tires", label: "Tires" },
+    { value: "Batteries", label: "Batteries" },
+    { value: "Lighting", label: "Lighting" },
+    { value: "Interior", label: "Interior" },
+    { value: "Exterior", label: "Exterior" },
+    // Add more default categories as needed
+  ];
 
   if (!isOpen) return null;
 
@@ -99,6 +135,23 @@ const EditModal = ({ isOpen, onClose, onConfirm, initialProductDetails }) => {
                 min="0.01"
                 step="0.01"
                 required
+              />
+            </div>
+            <div className="mb-4">
+              <label
+                htmlFor="categories"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                Categories
+              </label>
+              <CreatableSelect
+                isMulti
+                name="categories"
+                options={categoryOptions}
+                className="basic-multi-select"
+                classNamePrefix="select"
+                value={productCategories}
+                onChange={handleCategoryChange}
               />
             </div>
             <div className="mb-4">
