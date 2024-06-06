@@ -13,9 +13,6 @@ exports.addProduct = async (req, res) => {
 
     const uploadedImages = [];
 
-    console.log("I am Here");
-    console.log(req.files);
-
     if (req.files && req.files.length > 0) {
       console.log("I am Here Inside the If Statement");
       for (const file of req.files) {
@@ -25,6 +22,8 @@ exports.addProduct = async (req, res) => {
       }
     }
     console.log("I am Here Now");
+    console.log(uploadedImages);
+    console.log(req.user._id);
 
     const product = new Product({
       name,
@@ -35,7 +34,9 @@ exports.addProduct = async (req, res) => {
       unitPrice,
       company: req.user._id,
     });
+    console.log(product);
     await product.save();
+    console.log("Product Added Successfully");
     res.status(201).json(product);
   } catch (err) {
     res.status(500).json({ error: "Server error" });

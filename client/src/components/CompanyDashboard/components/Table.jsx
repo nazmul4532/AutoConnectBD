@@ -71,7 +71,7 @@ const Table = ({ api, data, headers }) => {
     setSelectedItem(item);
     setIsEditModalOpen(true);
   };
-
+  //Needs a Confirm Modal Here
   const handleRemoveClick = async (itemId) => {
     try {
       console.log("Removing product");

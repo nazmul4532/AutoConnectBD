@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { MdClose, MdAdd } from "react-icons/md";
 
-const AddProductModal = ({ isOpen, onClose, onConfirm }) => {
+const AddProductModal = ({ isOpen, onClose, onConfirm, api }) => {
   const [productDetails, setProductDetails] = useState({
     name: "",
-    image: "",
+    images: "",
     quantity: 0,
     price: "",
   });
@@ -14,9 +14,8 @@ const AddProductModal = ({ isOpen, onClose, onConfirm }) => {
     setProductDetails({ ...productDetails, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Call the onConfirm function with the product details
     onConfirm(productDetails);
   };
 
@@ -100,23 +99,26 @@ const AddProductModal = ({ isOpen, onClose, onConfirm }) => {
             </div>
             <div className="mb-4">
               <label
-                htmlFor="image"
+                htmlFor="images"
                 className="block text-sm font-medium text-gray-700"
               >
-                Image
+                Image(s) upto 5
               </label>
               <input
                 type="file"
-                name="image"
-                id="image"
+                name="images"
+                id="images"
                 accept="image/*"
                 className="cursor-pointer block w-full font-medium py-2 px-4 text-gray-700 border border-gray-300 rounded cursor-pointer bg-gray-200 hover:bg-gray-300 focus:outline-none"
                 onChange={(e) => {
+                  const files = e.target.files; // Get the array of files
+                  const imagesArray = Array.from(files); // Convert FileList to array
                   setProductDetails({
                     ...productDetails,
-                    image: e.target.files[0],
+                    images: imagesArray, // Store the array of images in state
                   });
                 }}
+                multiple // Allow multiple file selection
                 required
               />
             </div>

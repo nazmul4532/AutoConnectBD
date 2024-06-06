@@ -78,8 +78,30 @@ const CompanyDashboard = () => {
           <AddProductModal
             isOpen={isAddProductModalOpen}
             onClose={() => setIsAddProductModalOpen(false)}
-            onConfirm={(productDetails) => {
+            onConfirm={async (productDetails) => {
               // Handle adding the product details here
+              const formData = new FormData();
+              const accessToken = localStorage.getItem("accessToken");
+              console.log("Product added:", productDetails);
+              formData.append('name', productDetails.name);
+              formData.append('unitPrice', productDetails.price);
+              formData.append('quantity', productDetails.quantity);
+              for (let i = 0; i < productDetails.images.length; i++) {
+                formData.append('images', productDetails.images[i]);
+              }
+              const res = await fetch(
+                `${import.meta.env.VITE_APP_API_URL}/api/product/add`,
+                {
+                  method: "POST",
+                  headers: {
+                    Authorization: `Bearer ${JSON.parse(accessToken)}`,
+                  },
+                  body: formData,
+                }
+              );
+              if (!res.ok) {
+                throw new Error("Error fetching products");
+              }
               console.log("Product added:", productDetails);
               setIsAddProductModalOpen(false);
             }}
