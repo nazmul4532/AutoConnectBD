@@ -232,3 +232,37 @@ exports.getProductDetails = async (req, res) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 };
+
+
+exports.addRating = async (req, res) => {
+  try {
+    const { productId, ratingValue } = req.body;
+    const { userId } = req.user; // Assuming userId is available in the request object
+
+    // Find the product
+    const product = await Product.findById(productId);
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    // Check if the user has already rated the product
+    const existingRating = product.ratings.find(rating => rating.user.toString() === userId);
+    if (existingRating) {
+      return res.status(400).json({ message: "You have already rated this product" });
+    }
+
+    // Add the rating
+    product.ratings.push({ user: userId, value: ratingValue });
+
+    // Calculate the average rating
+    const totalRating = product.ratings.reduce((acc, curr) => acc + curr.value, 0);
+    product.averageRating = (totalRating / product.ratings.length).toFixed(2);
+
+    await product.save();
+
+    res.status(200).json({ message: "Rating added successfully" });
+  } catch (error) {
+    console.error("Error adding rating:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};

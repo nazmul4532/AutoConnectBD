@@ -33,6 +33,25 @@ const productSchema = new Schema({
     type: Date,
     default: Date.now, // Use the current timestamp as the default value
   },
+  ratings: [
+    {
+      user: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+      },
+      value: {
+        type: Number,
+        required: true,
+        min: 1,
+        max: 5,
+      },
+    },
+  ],
+  averageRating: {
+    type: Number,
+    default: 0,
+  },
 },
 {
   timestamps: true,

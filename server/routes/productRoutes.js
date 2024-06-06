@@ -43,6 +43,9 @@ router.patch(
 // Get products with pagination and optional search parameters
 router.get("/", verifyToken, productController.getCompanyProducts);
 
-router.get("/product-details/:id", productController.getProductDetails)
+router.get("/product-details/:id", productController.getProductDetails);
+
+router.post('/add-rating', productController.addRating);
+
 
 module.exports = router;
