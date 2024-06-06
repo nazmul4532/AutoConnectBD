@@ -4,6 +4,8 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 require('dotenv').config();
+const uploadMiddleware = require('./middleware/uploadMiddleware');
+const configureCloudinary = require('./configs/cloudinaryConfig');
 
 
 const app = express();
@@ -12,6 +14,8 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 app.use(cookieParser());
+app.use(uploadMiddleware);
+configureCloudinary();
 
 // Middleware to parse JSON bodies
 app.use(express.json());

@@ -1,13 +1,34 @@
 const Product = require("../models/productModel");
 const User = require("../models/userModel");
+const upload = require('../configs/multerConfig');
+const cloudinary = require('cloudinary').v2;
+const configureCloudinary = require('../configs/cloudinaryConfig');
+
 
 // Add a product
 exports.addProduct = async (req, res) => {
   try {
-    const { name, img, type, quantity, description, unitPrice } = req.body;
+    configureCloudinary();
+    const { name, type, quantity, description, unitPrice } = req.body;
+
+    const uploadedImages = [];
+
+    console.log("I am Here");
+    console.log(req.files);
+
+    if (req.files && req.files.length > 0) {
+      console.log("I am Here Inside the If Statement");
+      for (const file of req.files) {
+        console.log("I am Here Inside the For Loop");
+        const uploadResult = await cloudinary.uploader.upload(file.path, { folder: 'product-images' });
+        uploadedImages.push(uploadResult.secure_url);
+      }
+    }
+    console.log("I am Here Now");
+
     const product = new Product({
       name,
-      img,
+      img: uploadedImages,
       type,
       quantity,
       description,

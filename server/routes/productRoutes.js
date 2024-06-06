@@ -2,9 +2,10 @@ const express = require("express");
 const router = express.Router();
 const productController = require("../controllers/productController");
 const { verifyToken, isCompany } = require("../middleware/authMiddleware"); // Assumed to be implemented
+const upload = require('../configs/multerConfig');
 
 // Add a product
-router.post("/add", verifyToken, isCompany, productController.addProduct);
+router.post("/add", verifyToken, isCompany, upload.array('images', 5), productController.addProduct);
 
 // Update a product
 router.patch(
