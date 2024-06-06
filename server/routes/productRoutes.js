@@ -41,7 +41,7 @@ router.patch(
 );
 
 // Get products with pagination and optional search parameters
-router.get("/", verifyToken, productController.getCompanyProducts);
+router.get("/", verifyToken, productController.getProducts);
 
 router.get("/product-details/:id", productController.getProductDetails);
 

@@ -5,11 +5,10 @@ const cloudinary = require('cloudinary').v2;
 const configureCloudinary = require('../configs/cloudinaryConfig');
 
 
-// Add a product
 exports.addProduct = async (req, res) => {
   try {
     configureCloudinary();
-    const { name, type, quantity, description, unitPrice } = req.body;
+    const { name, category, quantity, description, unitPrice } = req.body;
 
     const uploadedImages = [];
 
@@ -34,7 +33,7 @@ exports.addProduct = async (req, res) => {
     const product = new Product({
       name,
       img: uploadedImages,
-      type,
+      category,
       quantity,
       description,
       unitPrice,
@@ -52,7 +51,7 @@ exports.addProduct = async (req, res) => {
 // Update a product
 exports.updateProduct = async (req, res) => {
   console.log("Updating Product");
-  const { name, description, img, type, quantity, unitPrice } = req.body;
+  const { name, description, img, category, quantity, unitPrice } = req.body;
   // console.log(req.body);
   // console.log("files");
   // console.log(req.file);
@@ -63,11 +62,9 @@ exports.updateProduct = async (req, res) => {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    // Update product information if present in the request body
     if (name) product.name = name;
     if (description) product.description = description;
 
-    // Append new image URLs to existing array if provided and not empty
     const uploadedImages = [];
     if (req.file) {
       const uploadResult = await cloudinary.uploader.upload(req.file.path, { folder: 'product-images' });
@@ -75,7 +72,7 @@ exports.updateProduct = async (req, res) => {
       product.img = uploadedImages;
     }    
 
-    if (type) product.type = type;
+    if (category) product.category = category;
     if (quantity>=0){ 
       // console.log("Updating Quantity");
       product.quantity = quantity;
@@ -91,7 +88,6 @@ exports.updateProduct = async (req, res) => {
   }
 };
 
-// Delete an image from a product
 exports.deleteImage = async (req, res) => {
   try {
     const productId = req.params.id;
@@ -117,7 +113,6 @@ exports.deleteImage = async (req, res) => {
   }
 };
 
-// Delete a product
 exports.deleteProduct = async (req, res) => {
   try {
     const productId = req.params.id;
@@ -133,7 +128,6 @@ exports.deleteProduct = async (req, res) => {
   }
 };
 
-// Decrease the quantity of a product
 exports.decreaseQuantity = async (req, res) => {
   try {
     const productId = req.params.id;
@@ -160,13 +154,15 @@ exports.decreaseQuantity = async (req, res) => {
 };
 
 // Get products with pagination and optional search parameters
-exports.getCompanyProducts = async (req, res) => {
+exports.getProducts = async (req, res) => {
   // works like search too
   try {
     console.log("Fetching Products");
-    const { page = 1, pageSize = 5, keyword, type, company } = req.query;
+    const { page = 1, pageSize = 5, keyword, category, company } = req.query;
     const query = {};
-    query.company = req.user;
+    if(req.user.role === "company"){
+      query.company = req.user;
+    }
     // console.log(page);
     // console.log( pageSize);
 
@@ -177,8 +173,8 @@ exports.getCompanyProducts = async (req, res) => {
       ];
     }
 
-    if (type) {
-      query.type = { $elemMatch: { $regex: type, $options: "i" } };
+    if (category) {
+      query.category = { $elemMatch: { $regex: category, $options: "i" } };
     }
 
     if (company) {
@@ -237,24 +233,20 @@ exports.getProductDetails = async (req, res) => {
 exports.addRating = async (req, res) => {
   try {
     const { productId, ratingValue } = req.body;
-    const { userId } = req.user; // Assuming userId is available in the request object
+    const { userId } = req.user; 
 
-    // Find the product
     const product = await Product.findById(productId);
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    // Check if the user has already rated the product
     const existingRating = product.ratings.find(rating => rating.user.toString() === userId);
     if (existingRating) {
       return res.status(400).json({ message: "You have already rated this product" });
     }
 
-    // Add the rating
     product.ratings.push({ user: userId, value: ratingValue });
 
-    // Calculate the average rating
     const totalRating = product.ratings.reduce((acc, curr) => acc + curr.value, 0);
     product.averageRating = (totalRating / product.ratings.length).toFixed(2);
 
