@@ -29,7 +29,15 @@ const productSchema = new Schema({
     ref: "User",
     required: true,
   },
-});
+  createdAt: {  // Define the createdAt field explicitly
+    type: Date,
+    default: Date.now, // Use the current timestamp as the default value
+  },
+},
+{
+  timestamps: true,
+}
+);
 
 const Product = mongoose.model("Product", productSchema);
 

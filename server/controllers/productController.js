@@ -194,6 +194,7 @@ exports.getCompanyProducts = async (req, res) => {
     }
 
     const products = await Product.find(query)
+      .sort({ createdAt: -1 })
       .skip((page - 1) * pageSize)
       .limit(parseInt(pageSize));
 
@@ -212,5 +213,22 @@ exports.getCompanyProducts = async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: "Server error" });
+  }
+};
+
+
+exports.getProductDetails = async (req, res) => {
+  try {
+    const productId = req.params.productId;
+
+    const product = await Product.findById(orderId);
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    res.status(200).json(product);
+  } catch (error) {
+    console.error("Error fetching product details:", error);
+    return res.status(500).json({ message: "Internal server error" });
   }
 };

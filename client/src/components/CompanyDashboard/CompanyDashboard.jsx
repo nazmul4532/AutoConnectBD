@@ -105,6 +105,7 @@ const CompanyDashboard = () => {
               }
               console.log("Product added:", productDetails);
               setIsAddProductModalOpen(false);
+              window.location.reload();
             }}
           />
         </div>
