@@ -13,17 +13,23 @@ exports.addProduct = async (req, res) => {
 
     const uploadedImages = [];
 
-    if (req.files && req.files.length > 0) {
-      console.log("I am Here Inside the If Statement");
-      for (const file of req.files) {
-        console.log("I am Here Inside the For Loop");
-        const uploadResult = await cloudinary.uploader.upload(file.path, { folder: 'product-images' });
-        uploadedImages.push(uploadResult.secure_url);
-      }
-    }
-    console.log("I am Here Now");
-    console.log(uploadedImages);
-    console.log(req.user._id);
+    // if (req.files && req.files.length > 0) {
+    //   console.log("I am Here Inside the If Statement");
+    //   for (const file of req.files) {
+    //     console.log("I am Here Inside the For Loop");
+    //     const uploadResult = await cloudinary.uploader.upload(file.path, { folder: 'product-images' });
+    //     uploadedImages.push(uploadResult.secure_url);
+    //   }
+    // }
+    // console.log("I am Here Now");
+    // console.log(uploadedImages);
+    // console.log(req.user._id);
+    if (req.file) {
+      // console.log("I am Here Inside the If Statement");
+      // console.log("I am Here Inside the For Loop");
+      const uploadResult = await cloudinary.uploader.upload(req.file.path, { folder: 'product-images' });
+      uploadedImages.push(uploadResult.secure_url);
+    }    
 
     const product = new Product({
       name,
@@ -47,8 +53,11 @@ exports.addProduct = async (req, res) => {
 exports.updateProduct = async (req, res) => {
   console.log("Updating Product");
   const { name, description, img, type, quantity, unitPrice } = req.body;
+  // console.log(req.body);
+  // console.log("files");
+  // console.log(req.file);
   try {
-    console.log(req.params.id);
+    // console.log(req.params.id);
     const product = await Product.findById(req.params.id);
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
@@ -59,47 +68,23 @@ exports.updateProduct = async (req, res) => {
     if (description) product.description = description;
 
     // Append new image URLs to existing array if provided and not empty
-    if (img && Array.isArray(img) && product.img.length > 0) {
-      product.img = [...product.img, ...img];
-    } else if (img && Array.isArray(img)) {
-      product.img = img;
-    }
+    const uploadedImages = [];
+    if (req.file) {
+      const uploadResult = await cloudinary.uploader.upload(req.file.path, { folder: 'product-images' });
+      uploadedImages.push(uploadResult.secure_url);
+      product.img = uploadedImages;
+    }    
 
     if (type) product.type = type;
     if (quantity>=0){ 
-      console.log("Updating Quantity");
+      // console.log("Updating Quantity");
       product.quantity = quantity;
-      console.log(quantity);
     }
     if (unitPrice>=0) product.unitPrice = unitPrice;
 
     await product.save();
     console.log("Updated Product Successfully");
-    console.log(product);
     res.status(200).json({ message: "Product updated successfully" });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-    console.log(error);
-  }
-};
-
-
-//update product quantity
-exports.updateProductQuantity = async (req, res) => {
-  const {quantity} = req.body;
-
-  try {
-    console.log(req.params.id);
-    const product = await Product.findById(req.params.id);
-    if (!product) {
-      return res.status(404).json({ message: "Product not found" });
-    }
-
-    if (quantity) product.quantity = quantity;
-
-    await product.save();
-
-    res.status(200).json({ message: "Product quantity updated successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
     console.log(error);

@@ -34,6 +34,7 @@ const EditModal = ({ isOpen, onClose, onConfirm, initialProductDetails }) => {
       return;
     }
     onConfirm({
+      _id: initialProductDetails._id,
       name: productName,
       price: productPrice,
       image: productImage,

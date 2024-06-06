@@ -29,7 +29,6 @@ const Table = ({ api, data, headers }) => {
   const getProductData = async () => {
     try {
       console.log("Fetching Products");
-      console.log(currentPage);
       const res = await fetch(
         `${api}?page=${currentPage}&pageSize=${itemsPerPage}`,
         {
@@ -107,14 +106,14 @@ const Table = ({ api, data, headers }) => {
       quantity = -parseInt(quantity, 10);
     }
     let updatedQuantity = selectedItem.quantity + quantity;
-    console.log(updatedQuantity);
+    // console.log(updatedQuantity);
     if(updatedQuantity < 0) {
       toast.error("Quantity cannot be less than 0");
       return;
     }
     try {
-      console.log(quantity);
-      console.log(itemId);
+      // console.log(quantity);
+      // console.log(itemId);
 
       const res = await fetch(`${api}/update/${itemId}`, {
         method: "PATCH",
@@ -141,8 +140,29 @@ const Table = ({ api, data, headers }) => {
   const handleConfirmEdit = async (updatedProduct) => {
     setIsEditModalOpen(false);
     try {
-      console.log(updatedProduct);
       // Add logic to update the product in the state or make API call here
+      // Handle adding the product details here
+      const formData = new FormData();
+      const accessToken = localStorage.getItem("accessToken");
+      // console.log("Product updated:", updatedProduct);
+      formData.append('name', updatedProduct.name);
+      formData.append('unitPrice', updatedProduct.price);
+      formData.append('quantity', updatedProduct.quantity);
+      formData.append('image', updatedProduct.image);
+      const res = await fetch(
+        `${api}/update/${updatedProduct._id}`,
+        {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${JSON.parse(accessToken)}`,
+          },
+          body: formData,
+        }
+      );
+      if (!res.ok) {
+        throw new Error("Error fetching products");
+      }
+      getProductData();
     } catch (error) {
       console.error("Error:", error);
       toast.error("Server Error");

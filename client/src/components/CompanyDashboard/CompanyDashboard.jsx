@@ -86,9 +86,10 @@ const CompanyDashboard = () => {
               formData.append('name', productDetails.name);
               formData.append('unitPrice', productDetails.price);
               formData.append('quantity', productDetails.quantity);
-              for (let i = 0; i < productDetails.images.length; i++) {
-                formData.append('images', productDetails.images[i]);
-              }
+              formData.append('image', productDetails.image);
+              // for (let i = 0; i < productDetails.images.length; i++) {
+              //   formData.append('images', productDetails.images[i]);
+              // }
               const res = await fetch(
                 `${import.meta.env.VITE_APP_API_URL}/api/product/add`,
                 {

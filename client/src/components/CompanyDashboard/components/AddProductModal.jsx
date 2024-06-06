@@ -4,7 +4,7 @@ import { MdClose, MdAdd } from "react-icons/md";
 const AddProductModal = ({ isOpen, onClose, onConfirm, api }) => {
   const [productDetails, setProductDetails] = useState({
     name: "",
-    images: "",
+    image: "",
     quantity: 0,
     price: "",
   });
@@ -14,7 +14,7 @@ const AddProductModal = ({ isOpen, onClose, onConfirm, api }) => {
     setProductDetails({ ...productDetails, [name]: value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     onConfirm(productDetails);
   };
@@ -99,26 +99,23 @@ const AddProductModal = ({ isOpen, onClose, onConfirm, api }) => {
             </div>
             <div className="mb-4">
               <label
-                htmlFor="images"
+                htmlFor="image"
                 className="block text-sm font-medium text-gray-700"
               >
-                Image(s) upto 5
+                Image
               </label>
               <input
                 type="file"
-                name="images"
-                id="images"
+                name="image"
+                id="image"
                 accept="image/*"
                 className="cursor-pointer block w-full font-medium py-2 px-4 text-gray-700 border border-gray-300 rounded cursor-pointer bg-gray-200 hover:bg-gray-300 focus:outline-none"
                 onChange={(e) => {
-                  const files = e.target.files; // Get the array of files
-                  const imagesArray = Array.from(files); // Convert FileList to array
                   setProductDetails({
                     ...productDetails,
-                    images: imagesArray, // Store the array of images in state
+                    image: e.target.files[0],
                   });
                 }}
-                multiple // Allow multiple file selection
                 required
               />
             </div>

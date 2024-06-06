@@ -5,13 +5,14 @@ const { verifyToken, isCompany } = require("../middleware/authMiddleware"); // A
 const upload = require('../configs/multerConfig');
 
 // Add a product
-router.post("/add", verifyToken, isCompany, upload.array('images', 5), productController.addProduct);
+router.post("/add", verifyToken, isCompany, upload.single('image'), productController.addProduct);
 
 // Update a product
 router.patch(
   "/update/:id",
   verifyToken,
   isCompany,
+  upload.single('image'),
   productController.updateProduct
 );
 
@@ -29,13 +30,6 @@ router.delete(
   verifyToken,
   isCompany,
   productController.deleteProduct
-);
-
-router.patch(
-  "/update_quantity/:id",
-  verifyToken,
-  isCompany,
-  productController.updateProductQuantity
 );
 
 // Decrease the quantity of a product
