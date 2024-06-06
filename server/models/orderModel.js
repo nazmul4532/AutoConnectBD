@@ -8,6 +8,10 @@ const OrderSchema = new Schema(
       ref: "User",
       required: true,
     },
+    company: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
     cart: {
       type: Schema.Types.ObjectId,
       ref: "Cart",
@@ -57,9 +61,9 @@ const OrderSchema = new Schema(
       type: String,
       required: true,
     },
-    createdAt: {  // Define the createdAt field explicitly
+    createdAt: { 
       type: Date,
-      default: Date.now, // Use the current timestamp as the default value
+      default: Date.now, 
     },
   },
   {

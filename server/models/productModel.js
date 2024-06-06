@@ -29,9 +29,9 @@ const productSchema = new Schema({
     ref: "User",
     required: true,
   },
-  createdAt: {  // Define the createdAt field explicitly
+  createdAt: {  
     type: Date,
-    default: Date.now, // Use the current timestamp as the default value
+    default: Date.now,
   },
   ratings: [
     {

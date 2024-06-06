@@ -1,58 +1,106 @@
 const Order = require("../models/orderModel");
 const Cart = require("../models/cartModel");
+const Product = require("../models/productModel");
 
-exports.createOrderFromCart = async (req,res) => {
-  try {
-    const { cartId, paymentMethod, deliveryAddress} = req.body;
-    // Fetch the cart
-    const cart = await Cart.findById(cartId).populate("products.product");
-    if (!cart) {
-      throw new Error("Cart not found");
+exports.createOrderFromCart = async (req, res) => {
+    try {
+      const { cartId, paymentMethod, deliveryAddress } = req.body;
+      const cart = await Cart.findById(cartId).populate("products.product");
+      if (!cart) {
+        throw new Error("Cart not found");
+      }
+  
+      const productsByCompany = {};
+      cart.products.forEach(item => {
+        const companyId = item.product.company.toString();
+        if (!productsByCompany[companyId]) {
+          productsByCompany[companyId] = [];
+        }
+        productsByCompany[companyId].push({
+          product: item.product._id,
+          quantity: item.quantity,
+          price: item.product.price,
+        });
+      });
+  
+      const orders = [];
+      for (const companyId in productsByCompany) {
+        const companyProducts = productsByCompany[companyId];
+        const order = new Order({
+          user: req.user._id,
+          products: companyProducts,
+          paymentMethod: paymentMethod,
+          paymentStatus: paymentMethod === "cash_on_delivery" ? "pending" : "completed",
+          deliveryAddress: deliveryAddress,
+        });
+        await order.save();
+        orders.push(order);
+      }
+      console.log("Orders created successfully:", orders);
+
+      cart.products = [];
+      await cart.save();
+      console.log("Cart cleared after order creation");
+  
+      res.status(201).json({ message: "Orders created successfully", orders: orders });
+    } catch (error) {
+      console.error("Error creating orders from cart:", error);
+      throw error; 
     }
+  };
+  
 
-    // Prepare products array
-    const products = cart.products.map(item => ({
-      product: item.product._id,
-      quantity: item.quantity,
-      price: item.product.price, // Assuming price is a field in the Product schema
-    }));
-
-    // Create the order
-    const order = new Order({
-      user: req.user._id,
-      cart: cart._id, // Optional cart reference
-      products: products,
-      paymentMethod: paymentMethod,
-      paymentStatus: paymentMethod === "cash_on_delivery" ? "pending" : "completed",
-      deliveryAddress: deliveryAddress,
-    });
-
-    await order.save();
-    console.log("Order created successfully:", order);
-
-    // Optionally, clear the cart after order creation
-    cart.products = [];
-    await cart.save();
-    console.log("Cart cleared after order creation");
-
-    return order;
-  } catch (error) {
-    console.error("Error creating order from cart:", error);
-  }
-};
+exports.createOrderBuyNow = async (req, res) => {
+    try {
+      const { productId, quantity, paymentMethod, deliveryAddress } = req.body;
+  
+      const product = await Product.findById(productId);
+      if (!product) {
+        throw new Error("Product not found");
+      }
+  
+      const order = new Order({
+        user: req.user._id,
+        company: product.company,
+        products: [{
+          product: productId,
+          quantity: quantity,
+          unitPrice: product.unitPrice,
+        }],
+        paymentMethod: paymentMethod,
+        paymentStatus: paymentMethod === "cash_on_delivery" ? "pending" : "completed",
+        deliveryAddress: deliveryAddress,
+      });
+  
+      await order.save();
+      console.log("Order created successfully:", order);
+  
+      res.status(201).json({ message: "Order created successfully", order: order });
+    } catch (error) {
+      console.error("Error creating order:", error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  };
+  
 
 
 exports.updateOrderStatus = async (req, res) => {
     try {
       const { orderId, status } = req.body;
   
-      // Find the order
       const order = await Order.findById(orderId);
       if (!order) {
         return res.status(404).json({ message: "Order not found" });
       }
+
+      if(order.status === "cancelled" || order.status === "completed"){
+        res.status(400).json({ message: "Order can't be updated" });
+      }
+
+      if(order.company.toString() !== req.user._id.toString() || order.user.toString() !== req.user._id.toString()){
+        res.status(400).json({ message: "You are not authorized to update this order" });
+      }
   
-      // Update the order status
       order.status = status;
       await order.save();
       console.log("Order status updated successfully:", order);
@@ -74,6 +122,10 @@ exports.getOrderDetails = async (req, res) => {
       return res.status(404).json({ message: "Order not found" });
     }
 
+    if(order.company.toString() !== req.user._id.toString() || order.user.toString() !== req.user._id.toString()){
+        res.status(400).json({ message: "You are not authorized to update this order" });
+    }
+
     res.status(200).json(order);
   } catch (error) {
     console.error("Error fetching order details:", error);
@@ -81,11 +133,16 @@ exports.getOrderDetails = async (req, res) => {
   }
 };
 
-exports.getUserOrders = async (req, res) => {
+exports.getOrders = async (req, res) => {
   try {
     const { page = 1, pageSize = 5 } = req.query;
 
-    const query = { user: req.user._id };
+    if (req.user.role === "customer") {
+      query.user = req.user._id;
+    }
+    if (req.user.role === "company") {
+      query.company = req.user._id;
+    }
 
     const orders = await Order.find(query)
       .sort({ createdAt: -1 })
