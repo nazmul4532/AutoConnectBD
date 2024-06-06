@@ -17,6 +17,8 @@ import AddProductModal from "./components/AddProductModal";
 
 const CompanyDashboard = () => {
   const [isAddProductModalOpen, setIsAddProductModalOpen] = useState(false);
+  const user = JSON.parse(localStorage.getItem("user"));
+  console.log(user.name);
 
   const handleAddProductClick = () => {
     setIsAddProductModalOpen(true);
@@ -26,7 +28,7 @@ const CompanyDashboard = () => {
     <div className="min-h-screen flex flex-col">
       <NavigationBar
         logoUrl="/car.ico"
-        userName="John Doe"
+        userName={user.name}
         userAvatarUrl="/bgImage.jpg"
       />
       <div className="flex flex-grow">
