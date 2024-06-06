@@ -44,8 +44,8 @@ exports.addProduct = async (req, res) => {
 
 // Update a product
 exports.updateProduct = async (req, res) => {
+  console.log("Updating Product");
   const { name, description, img, type, quantity, unitPrice } = req.body;
-
   try {
     console.log(req.params.id);
     const product = await Product.findById(req.params.id);
@@ -65,11 +65,16 @@ exports.updateProduct = async (req, res) => {
     }
 
     if (type) product.type = type;
-    if (quantity) product.quantity = quantity;
-    if (unitPrice) product.unitPrice = unitPrice;
+    if (quantity>=0){ 
+      console.log("Updating Quantity");
+      product.quantity = quantity;
+      console.log(quantity);
+    }
+    if (unitPrice>=0) product.unitPrice = unitPrice;
 
     await product.save();
-
+    console.log("Updated Product Successfully");
+    console.log(product);
     res.status(200).json({ message: "Product updated successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });

@@ -26,6 +26,35 @@ const Table = ({ api, data, headers }) => {
 
   const accessToken = localStorage.getItem("accessToken");
 
+  const getProductData = async () => {
+    try {
+      console.log("Fetching Products");
+      console.log(currentPage);
+      const res = await fetch(
+        `${api}?page=${currentPage}&pageSize=${itemsPerPage}`,
+        {
+          headers: {
+            Authorization: `Bearer ${JSON.parse(accessToken)}`,
+          },
+        }
+      );
+
+      if (!res.ok) {
+        throw new Error("Error fetching products");
+      }
+
+      const { products, pagination } = await res.json();
+
+      setItems(products);
+      setPagination(pagination);
+      console.log("Products:", products);
+      console.log("Pagination:", pagination);
+    } catch (error) {
+      console.error("Error:", error);
+      toast.error("Server Error");
+    }
+  };
+
   const handleIncreaseClick = (item) => {
     setSelectedItem(item);
     setAction("increase");
@@ -45,7 +74,8 @@ const Table = ({ api, data, headers }) => {
 
   const handleRemoveClick = async (itemId) => {
     try {
-      const res = await fetch(`${api}/${itemId}`, {
+      console.log("Removing product");
+      const res = await fetch(`${api}/delete/${itemId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${JSON.parse(accessToken)}`,
@@ -57,7 +87,8 @@ const Table = ({ api, data, headers }) => {
       }
 
       // Update the state to remove the item
-      setItems(items.filter((item) => item._id !== itemId));
+      // setItems(items.filter((item) => item._id !== itemId));
+      getProductData();
       toast.success("Product removed successfully");
     } catch (error) {
       console.error("Error:", error);
@@ -69,20 +100,42 @@ const Table = ({ api, data, headers }) => {
     if (!selectedItem || !quantity || quantity <= 0) {
       return;
     }
-
     if (action === "increase") {
       quantity = parseInt(quantity, 10);
+
     } else {
       quantity = -parseInt(quantity, 10);
     }
-    setIsModalOpen(false);
+    let updatedQuantity = selectedItem.quantity + quantity;
+    console.log(updatedQuantity);
+    if(updatedQuantity < 0) {
+      toast.error("Quantity cannot be less than 0");
+      return;
+    }
     try {
       console.log(quantity);
       console.log(itemId);
+
+      const res = await fetch(`${api}/update/${itemId}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${JSON.parse(accessToken)}`,
+        },
+        body: JSON.stringify({ quantity: updatedQuantity}),
+      });  
+
+      if (!res.ok) {
+        throw new Error("Error updating product quantity");
+      }
+      getProductData();
+
+      toast.success("Product quantity updated successfully");
     } catch (error) {
       console.error("Error:", error);
       toast.error("Server Error");
     }
+    setIsModalOpen(false);
   };
 
   const handleConfirmEdit = async (updatedProduct) => {
@@ -97,35 +150,6 @@ const Table = ({ api, data, headers }) => {
   };
 
   useEffect(() => {
-    const getProductData = async () => {
-      try {
-        console.log("Fetching Products");
-        console.log(currentPage);
-        const res = await fetch(
-          `${api}?page=${currentPage}&pageSize=${itemsPerPage}`,
-          {
-            headers: {
-              Authorization: `Bearer ${JSON.parse(accessToken)}`,
-            },
-          }
-        );
-
-        if (!res.ok) {
-          throw new Error("Error fetching products");
-        }
-
-        const { products, pagination } = await res.json();
-
-        setItems(products);
-        setPagination(pagination);
-        console.log("Products:", products);
-        console.log("Pagination:", pagination);
-      } catch (error) {
-        console.error("Error:", error);
-        toast.error("Server Error");
-      }
-    };
-
     getProductData();
   }, [currentPage, itemsPerPage, api, accessToken]);
 
