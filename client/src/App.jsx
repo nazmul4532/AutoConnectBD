@@ -12,6 +12,7 @@ import NotFound from "./components/NotFound";
 import CompanyDashboard from "./components/CompanyDashboard/CompanyDashboard";
 import LogOutPage from "./components/Logout/LogoutPage";
 import LandingPage from "./components/LandingPage/LandingPage";
+import ProductsPage from "./components/ProductsPage/ProductsPage";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -89,6 +90,7 @@ function App() {
           element={ isLoggedIn && role === "company" ? <CompanyDashboard /> : <Navigate to="/login" />}
         />
         <Route path="/landingPage" element={<LandingPage/>} />
+        <Route path="/customer/products" element={<ProductsPage/>} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
