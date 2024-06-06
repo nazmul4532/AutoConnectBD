@@ -40,7 +40,7 @@ exports.addProduct = async (req, res) => {
       unitPrice,
       company: req.user._id,
     });
-    console.log(product);
+    // console.log(product);
     await product.save();
     console.log("Product Added Successfully");
     res.status(201).json(product);
@@ -167,8 +167,8 @@ exports.getCompanyProducts = async (req, res) => {
     const { page = 1, pageSize = 5, keyword, type, company } = req.query;
     const query = {};
     query.company = req.user;
-    console.log(page);
-    console.log( pageSize);
+    // console.log(page);
+    // console.log( pageSize);
 
     if (keyword) {
       query.$or = [
@@ -187,7 +187,7 @@ exports.getCompanyProducts = async (req, res) => {
         role: "company",
       };
       const users = await User.find(userQuery);
-      console.log(users);
+      // console.log(users);
       const userId = users.map((user) => user._id);
 
       query.company = { $in: userId };
