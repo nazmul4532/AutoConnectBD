@@ -14,6 +14,7 @@ export default {
         "theme-red": "#DA0037",
         "theme-white": "#EDEDED",
         "theme-blue": "#3B8EA5",
+        "theme-yellow": "#FFB100",
       },
       keyframes: {
         fadeIn: {
