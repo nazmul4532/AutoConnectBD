@@ -86,7 +86,7 @@ const CompanyDashboard = () => {
               const accessToken = localStorage.getItem("accessToken");
               console.log("Product added:", productDetails);
               formData.append('name', productDetails.name);
-              formData.append('unitPrice', productDetails.price);
+              formData.append('unitPrice', productDetails.unitPrice);
               formData.append('quantity', productDetails.quantity);
               formData.append('image', productDetails.image);
               formData.append('categories', productDetails.categories);

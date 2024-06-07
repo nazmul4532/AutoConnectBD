@@ -7,7 +7,7 @@ const AddProductModal = ({ isOpen, onClose, onConfirm }) => {
     name: "",
     image: "",
     quantity: 0,
-    price: "",
+    unitPrice: "",
     categories: [],
   });
 
@@ -30,7 +30,6 @@ const AddProductModal = ({ isOpen, onClose, onConfirm }) => {
     { value: "Lighting", label: "Lighting" },
     { value: "Interior", label: "Interior" },
     { value: "Exterior", label: "Exterior" },
-    // Add more default categories as needed
   ];
 
   const handleChange = (e) => {
@@ -96,17 +95,17 @@ const AddProductModal = ({ isOpen, onClose, onConfirm }) => {
             </div>
             <div className="mb-4">
               <label
-                htmlFor="price"
+                htmlFor="unitPrice"
                 className="block text-sm font-medium text-gray-700"
               >
-                Price
+                Unit Price
               </label>
               <input
                 type="text"
-                name="price"
-                id="price"
+                name="unitPrice"
+                id="unitPrice"
                 className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-                value={productDetails.price}
+                value={productDetails.unitPrice}
                 onChange={handleChange}
                 required
               />

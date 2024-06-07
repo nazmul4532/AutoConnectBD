@@ -19,7 +19,7 @@ exports.createOrderFromCart = async (req, res) => {
         productsByCompany[companyId].push({
           product: item.product._id,
           quantity: item.quantity,
-          price: item.product.price,
+          price: item.product.unitPrice,
         });
       });
   

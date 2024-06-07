@@ -49,7 +49,7 @@ const EditModal = ({ isOpen, onClose, onConfirm, initialProductDetails }) => {
     onConfirm({
       _id: initialProductDetails._id,
       name: productName,
-      price: productPrice,
+      unitPrice: productPrice,
       image: productImage,
       categories: productCategories.map((category) => category.value),
     });

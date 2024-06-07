@@ -146,7 +146,7 @@ const Table = ({ api, data, headers }) => {
       const accessToken = localStorage.getItem("accessToken");
       // console.log("Product updated:", updatedProduct);
       formData.append('name', updatedProduct.name);
-      formData.append('unitPrice', updatedProduct.price);
+      formData.append('unitPrice', updatedProduct.unitPrice);
       formData.append('quantity', updatedProduct.quantity);
       formData.append('image', updatedProduct.image);
       formData.append('categories', updatedProduct.categories);

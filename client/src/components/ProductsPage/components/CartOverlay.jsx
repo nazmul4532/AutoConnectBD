@@ -7,7 +7,7 @@ const CartOverlay = ({ isOpen, onClose, cartProducts, removeProduct }) => {
   const subtotal =
     cartProducts && cartProducts.length > 0
       ? cartProducts.reduce(
-          (sum, product) => sum + product.price * product.quantity,
+          (sum, product) => sum + product.unitPrice * product.quantity,
           0
         )
       : 0;
