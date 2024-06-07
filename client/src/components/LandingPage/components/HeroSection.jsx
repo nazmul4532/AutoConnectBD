@@ -1,6 +1,10 @@
 import React from "react";
 
 const HeroSection = () => {
+
+  const getStarted = () => {
+    window.location.href = "/signup";
+  }
   return (
     <div className="relative h-screen flex items-center justify-between bg-theme-white px-8 md:px-16">
       <div className="relative z-10 text-theme-black text-left w-1/2 p-8 animate-fadeIn">
@@ -13,6 +17,7 @@ const HeroSection = () => {
         <button
           type="button"
           className="bg-red-600 hover:bg-red-700 text-white text-lg font-bold py-4 px-8 rounded focus:outline-none focus:shadow-outline mt-2"
+          onClick={getStarted}
         >
           Get Started
         </button>

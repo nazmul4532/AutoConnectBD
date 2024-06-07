@@ -11,7 +11,7 @@ import NavBar from "./components/Navbar";
 
 const links = [
   { title: "Products", url: "/customer/products" },
-  { title: "Appointments", url: "/customer/appointments" },
+  { title: "Order History", url: "/customer/order-history" },
   { title: "Logout", url: "/logout" },
 ];
 

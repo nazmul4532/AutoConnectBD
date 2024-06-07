@@ -6,12 +6,13 @@ import "react-toastify/dist/ReactToastify.css";
 
 const LandingPage = () => {
   const links = [
-    { title: "Home", url: "/home" },
-    { title: "Cars", url: "/cars" },
-    { title: "About", url: "/about" },
-    { title: "Why Us", url: "/why-us" },
-    { title: "Testimonials", url: "/testimonials" },
-    { title: "Contact", url: "/contact" },
+    { title: "", url: "" },
+    // { title: "Home", url: "/home" },
+    // { title: "Cars", url: "/cars" },
+    // { title: "About", url: "/about" },
+    // { title: "Why Us", url: "/why-us" },
+    // { title: "Testimonials", url: "/testimonials" },
+    // { title: "Contact", url: "/contact" },
   ];
 
   return (
