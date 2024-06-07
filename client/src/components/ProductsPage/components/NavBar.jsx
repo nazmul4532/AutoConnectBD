@@ -7,7 +7,7 @@ const NavBar = ({ logoUrl, userAvatarUrl, userName, links }) => {
         <div className="flex items-center justify-between">
           <div className="flex items-center justify-start">
             <a
-              href="/product-manufacturer/dashboard"
+              href="/customer/dashboard"
               className="flex ms-2 md:me-24 p-3"
             >
               <img src={logoUrl} className="h-8 me-3" alt="Logo" />
