@@ -4,7 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { AiOutlineSearch, AiOutlineShoppingCart } from "react-icons/ai";
 
 // components
-import NavBar from "./components/NavBar";
+import NavBar from "./components/Navbar";
 import CheckoutForm from "./components/CheckoutForm";
 import CartOverlay from "./components/CartOverlay";
 import ReviewStep from "./components/ReviewStep";
