@@ -19,7 +19,7 @@ const CartProduct = ({ product, removeProduct }) => {
           <div className="flex flex-col text-gray-700">
             <span className="font-semibold text-lg">{product.name}</span>
             <span className="text-sm">
-              ${product.price.toFixed(2)} x {product.quantity}{" "}
+              ${product.unitPrice.toFixed(2)} x {product.quantity}{" "}
               <strong className="text-black">${cartValue.toFixed(2)}</strong>{" "}
             </span>
           </div>

@@ -53,16 +53,17 @@ exports.getCart = async (req, res) => {
   const userId = req.user._id;
 
   try {
-    const cart = await Cart.findOne({ user: userId }).populate(
+    console.log("Fetching cart for user:", userId);
+    let cart = await Cart.findOne({ user: userId }).populate(
       "products.product"
     );
 
     if (!cart) {
-      return res
-        .status(404)
-        .json({ cart: [], hasCart: false, message: "Your cart is empty." });
+      cart = new Cart({ user: userId, products: [] });
+      await cart.save();
     }
 
+    console.log("Cart fetched successfully");
     res.status(200).json({ cart, hasCart: true });
   } catch (error) {
     res.status(500).json({ message: error.message });

@@ -102,12 +102,15 @@ const ProductsPage = () => {
   };
 
   const addToCart = (product) => {
+    console.log(product);
+    console.log(cartProducts);
     if (productExists(product._id)) {
       setCartProducts(updateQuantity(product._id, 1));
     } else {
       setCartProducts([...cartProducts, { ...product, quantity: 1 }]);
     }
     setCartCounter(cartCounter + 1);
+    console.log(cartProducts);
   };
 
   const removeProduct = (productId) => {
