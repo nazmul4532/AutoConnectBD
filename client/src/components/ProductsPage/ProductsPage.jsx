@@ -42,9 +42,8 @@ const categories = [
 
 const links = [
   { title: "Products", url: "/customer/products" },
-  { title: "Appointments", url: "/customer/appointments",
-    title: "Logout", url: "/logout",
-   },
+  { title: "Appointments", url: "/customer/appointments"},
+    {title: "Logout", url: "/logout"},
 ];
 
 const ProductsPage = () => {
