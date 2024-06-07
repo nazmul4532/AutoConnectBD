@@ -60,9 +60,9 @@ const OrderManagmentPage = () => {
         <div className="flex-grow p-8">
           <Breadcrumb />
           <Table
-            api={`${import.meta.env.VITE_APP_API_URL}/api/product`}
+            api={`${import.meta.env.VITE_APP_API_URL}/api/order`}
             data={[]}
-            headers={["Order ID", "Customer", "Status", "Total", "Details",]}
+            headers={["Order ID", "Customer Email", "Status", "Total", "Details",]}
           />
         </div>
       </div>

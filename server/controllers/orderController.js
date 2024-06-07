@@ -32,6 +32,7 @@ exports.createOrderFromCart = async (req, res) => {
       const orders = [];
       for (const companyId in productsByCompany) {
         const companyProducts = productsByCompany[companyId];
+        console.log(companyId);
         const order = new Order({
           user: req.user._id,
           firstName: firstName,
@@ -143,7 +144,9 @@ exports.getOrderDetails = async (req, res) => {
 
 exports.getOrders = async (req, res) => {
   try {
+    console.log("Trying to fetch user orders");
     const { page = 1, pageSize = 5 } = req.query;
+    let query = {};
 
     if (req.user.role === "customer") {
       query.user = req.user._id;

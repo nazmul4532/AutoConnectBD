@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Pagination from "./Pagination";
 import { toast } from "react-toastify";
 import ConfirmationModal from "./ConfirmationModal"; // Import the ConfirmationModal component
@@ -8,6 +8,8 @@ const Table = ({ api, data, headers }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [items, setItems] = useState(data);
   const [pagination, setPagination] = useState({});
+  const itemsPerPage = 5;
+  const accessToken = localStorage.getItem("accessToken");
   const [orders, setOrders] = useState([
     {
       _id: "1",
@@ -31,6 +33,33 @@ const Table = ({ api, data, headers }) => {
     },
     // Other orders...
   ]);
+  const fetchOrders = async () => {
+    try {
+      const res = await fetch(`${api}/user-orders?page=${currentPage}&limit=${itemsPerPage}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${JSON.parse(accessToken)}`,
+        },
+      });
+      if (!res.ok) {
+        throw new Error("Error fetching orders");
+      }
+      const { orders, pagination } = await res.json();
+      setOrders(orders);
+      setPagination(pagination);
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+      toast.error("Error fetching orders");
+    }
+  };
+
+  useEffect(() => {
+    fetchOrders();
+  }, [currentPage]);
+
+  useEffect(() => {
+    fetchOrders();
+  }, []);
 
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false); // State for modal visibility
   const [selectedOrderId, setSelectedOrderId] = useState(""); // State to store the selected order ID for confirmation
@@ -39,10 +68,8 @@ const Table = ({ api, data, headers }) => {
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false); // State for details modal visibility
   const [selectedOrderDetails, setSelectedOrderDetails] = useState(null); // State to store the selected order details
 
-  const itemsPerPage = 5;
   const totalPages = pagination.totalPages || 1;
   const totalProducts = pagination.totalProducts || 0;
-  const accessToken = localStorage.getItem("accessToken");
 
   const statusOptions = [
     {
@@ -127,7 +154,7 @@ const Table = ({ api, data, headers }) => {
                 <span className="text-black">{item._id}</span>
               </td>
               <td className="px-6 py-4 text-center">
-                <span className="text-black">{item.customerName}</span>
+                <span className="text-black">{item.customerEmail}</span>
               </td>
               <td className="px-6 py-4 text-center">
                 <div className="relative inline-block">

@@ -14,6 +14,6 @@ router.put('/update-order-status', orderController.updateOrderStatus);
 router.get('/order-details/:orderId', orderController.getOrderDetails);
 
 // Route for fetching user orders with pagination
-router.get('/user-orders', orderController.getOrders);
+router.get('/user-orders', verifyToken ,orderController.getOrders);
 
 module.exports = router;
