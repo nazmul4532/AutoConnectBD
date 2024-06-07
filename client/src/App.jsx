@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import "./App.css";
 
-// Component imports
+// component imports
 import LoginPage from "./components/LoginPage/LoginPage";
 import SignupPage from "./components/SignupPage/SignupPage";
 import ForgotPasswordPage from "./components/ForgotPasswordPage/ForgotPasswordPage";
@@ -13,6 +13,7 @@ import CompanyDashboard from "./components/CompanyDashboard/CompanyDashboard";
 import LogOutPage from "./components/Logout/LogoutPage";
 import LandingPage from "./components/LandingPage/LandingPage";
 import ProductsPage from "./components/ProductsPage/ProductsPage";
+import CheckoutPage from "./components/CheckoutPage/CheckoutPage";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -84,6 +85,7 @@ function App() {
         />
         <Route path="/landingPage" element={<LandingPage/>} />
         <Route path="/customer/products" element={<ProductsPage/>} />
+        <Route path="/customer/checkout" element={<CheckoutPage/>} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
