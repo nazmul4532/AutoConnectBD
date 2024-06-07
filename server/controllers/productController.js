@@ -65,7 +65,7 @@ exports.updateProduct = async (req, res) => {
 
     if (name) product.name = name;
     if (description) product.description = description;
-    product.category = categories.split(",").map((category) => category.trim());
+    if(categories || categories == []) product.category = categories.split(",").map((category) => category.trim());
     const uploadedImages = [];
     if (req.file) {
       const uploadResult = await cloudinary.uploader.upload(req.file.path, { folder: 'product-images' });
@@ -217,7 +217,7 @@ exports.getProductDetails = async (req, res) => {
   try {
     const productId = req.params.productId;
 
-    const product = await Product.findById(orderId);
+    const product = await Product.findById(productId);
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
     }
@@ -255,6 +255,52 @@ exports.addRating = async (req, res) => {
     res.status(200).json({ message: "Rating added successfully" });
   } catch (error) {
     console.error("Error adding rating:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+exports.getAllProductDetails = async (req, res) => {
+  try {
+    console.log("Fetching All Products");
+    const { keyword, category, company } = req.query;
+    const query = {};
+    if(req.user.role === "company"){
+      query.company = req.user;
+    }
+
+    if (keyword) {
+      query.$or = [
+        { name: { $regex: keyword, $options: "i" } },
+        { description: { $regex: keyword, $options: "i" } },
+      ];
+    }
+
+    if (category) {
+      query.category = { $elemMatch: { $regex: category, $options: "i" } };
+    }
+
+    if (company) {
+      const userQuery = {
+        name: { $regex: company, $options: "i" },
+        role: "company",
+      };
+      const users = await User.find(userQuery);
+      // console.log(users);
+      const userId = users.map((user) => user._id);
+
+      query.company = { $in: userId };
+    }
+
+
+    const products = await Product.find(query).sort({ createdAt: -1 });
+    if (!products) {
+      return res.status(404).json({ message: "Products not found" });
+    }
+    console.log("All Products Returned");
+    // console.log(products);
+    res.status(200).json(products);
+  } catch (error) {
+    console.error("Error fetching product details:", error);
     return res.status(500).json({ message: "Internal server error" });
   }
 };

@@ -32,7 +32,7 @@ function App() {
       if (accessToken) {
         try {
           // Send GET request to the server to check if user is logged in
-          const response = await fetch("http://localhost:8000/api/user", {
+          const response = await fetch(`${import.meta.env.VITE_APP_API_URL}/api/user`, {
             headers: {
               Authorization: `Bearer ${JSON.parse(accessToken)}`,
             },
@@ -59,31 +59,24 @@ function App() {
           path="/signup"
           element={isLoggedIn ? <Navigate to={`/${role}/dashboard`} /> : <SignupPage />}
         />
-        {/* <Route
-          path="/dashboard"
-          element={isLoggedIn ? <Navigate to="/dashboard" /> : <SignupPage />}
-        /> */}
         <Route
           path="/"
-          element={isLoggedIn ? <PrivateRoute /> : <Navigate to="/login" />}
+          element={isLoggedIn ? <LandingPage /> : <Navigate to="/login" />}
         />
           <Route
           path="/logout"
           element={<LogOutPage/>}
         />
-        {/* <Route
-          path="/dashboard"
-          element={isLoggedIn ? <DashboardPage /> : <Navigate to="/login" />}
-        /> */}
+   
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route
           path="/customer/dashboard"
-          element={ isLoggedIn && role === "customer" ? <DashboardPage /> : <Navigate to="/login" />}
+          element={ isLoggedIn && role === "customer" ? <ProductsPage /> : <Navigate to="/login" />}
         />
         <Route
           path="/workshop/dashboard"
-          element={ isLoggedIn && role === "workshop" ? <DashboardPage /> : <Navigate to="/login" />}
+          element={ isLoggedIn && role === "workshop" ? <ProductsPage /> : <Navigate to="/login" />}
         />
         <Route
           path="/company/dashboard"

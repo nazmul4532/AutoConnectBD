@@ -11,7 +11,7 @@ const ProductCard = ({ product, addToCart }) => {
       <a href="#">
         <img
           className="w-full h-48 object-cover"
-          src={product.image}
+          src={product.img[0]}
           alt={product.name}
         />
       </a>
@@ -27,13 +27,13 @@ const ProductCard = ({ product, addToCart }) => {
               <AiFillStar
                 key={i}
                 className={`w-5 h-5 ${
-                  i < product.rating ? "text-yellow-400" : "text-gray-300"
+                  i < product.averageRating ? "text-yellow-400" : "text-gray-300"
                 }`}
               />
             ))}
           </div>
           <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2 py-0.5 rounded ml-2">
-            {product.rating.toFixed(1)}
+            {product.averageRating.toFixed(1)}
           </span>
         </div>
         <div className="flex items-center justify-between">

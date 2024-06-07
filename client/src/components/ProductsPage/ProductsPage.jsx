@@ -9,30 +9,30 @@ import Breadcrumb from "./components/Breadcrumb";
 import ProductList from "./components/ProductList";
 import CartOverlay from "./components/CartOverlay";
 
-const products = [
-  {
-    _id: 1,
-    name: "Apple Watch Series 7 GPS, Aluminium Case, Starlight Sport",
-    image: "/bgImage.jpg",
-    rating: 3,
-    price: 599,
-  },
-  {
-    _id: 2,
-    name: "Apple Watch Series 7 GPS, Aluminium Case, Starlight Sport",
-    image: "/bgImage.jpg",
-    rating: 3,
-    price: 599,
-  },
-  {
-    _id: 3,
-    name: "Apple Watch Series 7 GPS, Aluminium Case, Starlight Sport",
-    image: "/bgImage.jpg",
-    rating: 3,
-    price: 599,
-  },
-  // Add more product objects here...
-];
+// const products = [
+//   {
+//     _id: 1,
+//     name: "Apple Watch Series 7 GPS, Aluminium Case, Starlight Sport",
+//     image: "/bgImage.jpg",
+//     rating: 3,
+//     price: 599,
+//   },
+//   {
+//     _id: 2,
+//     name: "Apple Watch Series 7 GPS, Aluminium Case, Starlight Sport",
+//     image: "/bgImage.jpg",
+//     rating: 3,
+//     price: 599,
+//   },
+//   {
+//     _id: 3,
+//     name: "Apple Watch Series 7 GPS, Aluminium Case, Starlight Sport",
+//     image: "/bgImage.jpg",
+//     rating: 3,
+//     price: 599,
+//   },
+//   // Add more product objects here...
+// ];
 
 const categories = [
   { id: 1, name: "Electronics" },
@@ -42,13 +42,44 @@ const categories = [
 
 const links = [
   { title: "Products", url: "/customer/products" },
-  { title: "Appointments", url: "/customer/appointments" },
+  { title: "Appointments", url: "/customer/appointments",
+    title: "Logout", url: "/logout",
+   },
 ];
 
 const ProductsPage = () => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartCounter, setCartCounter] = useState(0);
   const [cartProducts, setCartProducts] = useState([]);
+  const [products, setProducts] = useState([]);
+  const user = JSON.parse(localStorage.getItem("user"));
+  const accessToken = localStorage.getItem("accessToken");
+
+  const getProductData = async () => {
+    try {
+      console.log("Fetching Products");
+      const res = await fetch(
+        `${import.meta.env.VITE_APP_API_URL}/api/product/products`,
+        {
+          headers: {
+            Authorization: `Bearer ${JSON.parse(accessToken)}`,
+          },
+        }
+      );
+
+      if (!res.ok) {
+        throw new Error("Error fetching products");
+      }
+
+      const products = await res.json();
+      setProducts(products);
+      console.log("Products:", products);
+    } catch (error) {
+      console.error("Error:", error);
+      toast.error("Server Error");
+    }
+  };
+
 
   const toggleCart = () => {
     setIsCartOpen(!isCartOpen);
@@ -101,11 +132,15 @@ const ProductsPage = () => {
     setCartCounter(calculateTotalQuantity(cartProducts));
   }, [cartProducts]);
 
+  useEffect(() => {
+    getProductData();
+  }, []);
+
   return (
     <div className="min-h-screen flex flex-col relative">
       <NavigationBar
         logoUrl="/car.ico"
-        userName="John Doe"
+        userName={user.name}
         userAvatarUrl="/bgImage.jpg"
         links={links}
       />

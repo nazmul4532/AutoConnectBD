@@ -45,7 +45,10 @@ router.get("/", verifyToken, productController.getProducts);
 
 router.get("/product-details/:id", productController.getProductDetails);
 
-router.post('/add-rating', productController.addRating);
+router.get("/products", verifyToken, productController.getAllProductDetails);
+
+
+router.post('/add-rating', verifyToken, productController.addRating);
 
 
 module.exports = router;
