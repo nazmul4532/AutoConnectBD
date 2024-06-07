@@ -9,31 +9,6 @@ import Breadcrumb from "./components/Breadcrumb";
 import ProductList from "./components/ProductList";
 import CartOverlay from "./components/CartOverlay";
 
-// const products = [
-//   {
-//     _id: 1,
-//     name: "Apple Watch Series 7 GPS, Aluminium Case, Starlight Sport",
-//     image: "/bgImage.jpg",
-//     rating: 3,
-//     price: 599,
-//   },
-//   {
-//     _id: 2,
-//     name: "Apple Watch Series 7 GPS, Aluminium Case, Starlight Sport",
-//     image: "/bgImage.jpg",
-//     rating: 3,
-//     price: 599,
-//   },
-//   {
-//     _id: 3,
-//     name: "Apple Watch Series 7 GPS, Aluminium Case, Starlight Sport",
-//     image: "/bgImage.jpg",
-//     rating: 3,
-//     price: 599,
-//   },
-//   // Add more product objects here...
-// ];
-
 const categories = [
   { id: 1, name: "Electronics" },
   { id: 2, name: "Clothing" },
@@ -51,14 +26,15 @@ const ProductsPage = () => {
   const [cartCounter, setCartCounter] = useState(0);
   const [cartProducts, setCartProducts] = useState([]);
   const [products, setProducts] = useState([]);
+  const [searchQuery, setSearchQuery] = useState(""); // State variable for search query
   const user = JSON.parse(localStorage.getItem("user"));
   const accessToken = localStorage.getItem("accessToken");
 
-  const getProductData = async () => {
+  const getProductData = async (query = "") => {
     try {
       console.log("Fetching Products");
       const res = await fetch(
-        `${import.meta.env.VITE_APP_API_URL}/api/product/products`,
+        `${import.meta.env.VITE_APP_API_URL}/api/product/searchProducts?name=${query}`,
         {
           headers: {
             Authorization: `Bearer ${JSON.parse(accessToken)}`,
@@ -77,6 +53,12 @@ const ProductsPage = () => {
       console.error("Error:", error);
       toast.error("Server Error");
     }
+  };
+
+  const handleSearchInputChange = (event) => {
+    const query = event.target.value;
+    setSearchQuery(query);
+    getProductData(query); // Fetch products based on the search query
   };
 
   const toggleCart = () => {
@@ -159,6 +141,8 @@ const ProductsPage = () => {
             type="text"
             placeholder="Search products..."
             className="w-full pl-10 pr-4 py-2 bg-theme-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-theme-red"
+            value={searchQuery} // Bind the input value to the searchQuery state
+            onChange={handleSearchInputChange} // Handle input change
           />
           <AiOutlineSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
         </div>
