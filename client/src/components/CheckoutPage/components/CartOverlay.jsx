@@ -1,18 +1,32 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import CartProduct from "./CartProduct";
 
-const CartOverlay = ({ isOpen, onClose, cartProducts, removeProduct }) => {
+const CartOverlay = ({
+  isOpen,
+  onClose,
+  cartProducts,
+  removeProduct,
+  proceedToCheckout,
+}) => {
   const fixedShippingCost = 100;
   const subtotal =
-    cartProducts && cartProducts.length > 0
+    cartProducts.length > 0
       ? cartProducts.reduce(
-          (sum, product) => sum + product.price * product.quantity,
+          (sum, product) => sum + product.unitPrice * product.quantity,
           0
         )
       : 0;
 
   const total = subtotal + fixedShippingCost;
+
+  useEffect(() => {
+    proceedToCheckout({
+      subtotal: subtotal,
+      total: total,
+      shippingCost: fixedShippingCost,
+    });
+  }, [subtotal, total, fixedShippingCost]);
 
   return (
     <>
@@ -67,12 +81,6 @@ const CartOverlay = ({ isOpen, onClose, cartProducts, removeProduct }) => {
                     ${total.toFixed(2)}
                   </span>
                 </div>
-                <button
-                  onClick={() => alert("Order placed!")}
-                  className="mt-6 w-full bg-green-600 text-white py-3 rounded-lg text-lg font-bold hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400"
-                >
-                  Place Order
-                </button>
               </div>
             )}
           </div>

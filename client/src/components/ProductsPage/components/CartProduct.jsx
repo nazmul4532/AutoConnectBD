@@ -12,7 +12,7 @@ const CartProduct = ({ product, removeProduct }) => {
         <div className="flex items-center gap-4">
           <img
             className="w-16 h-16 rounded-md object-cover"
-            src={product.image}
+            src={product.img}
             alt={product.name}
           />
           {/* Product and Cart Details */}

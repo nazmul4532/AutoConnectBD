@@ -2,7 +2,7 @@ import React from "react";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import CartProduct from "./CartProduct";
 
-const CartOverlay = ({ isOpen, onClose, cartProducts, removeProduct }) => {
+const CartOverlay = ({ isOpen, onClose, cartProducts, removeProduct, placeOrder }) => {
   const fixedShippingCost = 100;
   const subtotal =
     cartProducts && cartProducts.length > 0
@@ -68,7 +68,7 @@ const CartOverlay = ({ isOpen, onClose, cartProducts, removeProduct }) => {
                   </span>
                 </div>
                 <button
-                  onClick={() => alert("Order placed!")}
+                  onClick={placeOrder}
                   className="mt-6 w-full bg-green-600 text-white py-3 rounded-lg text-lg font-bold hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400"
                 >
                   Place Order
