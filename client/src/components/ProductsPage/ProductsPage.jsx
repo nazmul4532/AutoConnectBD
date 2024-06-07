@@ -42,8 +42,8 @@ const categories = [
 
 const links = [
   { title: "Products", url: "/customer/products" },
-  { title: "Appointments", url: "/customer/appointments"},
-    {title: "Logout", url: "/logout"},
+  { title: "Appointments", url: "/customer/appointments" },
+  { title: "Logout", url: "/logout" },
 ];
 
 const ProductsPage = () => {
@@ -78,7 +78,6 @@ const ProductsPage = () => {
       toast.error("Server Error");
     }
   };
-
 
   const toggleCart = () => {
     setIsCartOpen(!isCartOpen);
@@ -134,6 +133,12 @@ const ProductsPage = () => {
     setCartCounter(calculateTotalQuantity(cartProducts));
   }, [cartProducts]);
 
+  const placeOrder = () => {
+    localStorage.setItem("cartProducts", JSON.stringify(cartProducts));
+    toast.success("Order placed successfully!");
+    window.location.href = "/customer/checkout";
+  };
+
   useEffect(() => {
     getProductData();
   }, []);
@@ -185,6 +190,7 @@ const ProductsPage = () => {
         setCartCounter={setCartCounter}
         cartProducts={cartProducts}
         removeProduct={removeProduct}
+        placeOrder={placeOrder}
       />
     </div>
   );

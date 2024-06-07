@@ -2,7 +2,7 @@ import React from "react";
 import { AiOutlineClose, AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 
 const CartProduct = ({ product, removeProduct }) => {
-  const cartValue = product.price * product.quantity;
+  const cartValue = product.unitPrice * product.quantity;
 
   return (
     <div className="flex flex-col gap-6 bg-white p-4 rounded-lg shadow-md">
@@ -12,7 +12,7 @@ const CartProduct = ({ product, removeProduct }) => {
         <div className="flex items-center gap-4">
           <img
             className="w-16 h-16 rounded-md object-cover"
-            src={product.image}
+            src={product.img}
             alt={product.name}
           />
           {/* Product and Cart Details */}
