@@ -1,7 +1,11 @@
 import React from "react";
 import { AiFillStar, AiOutlineShoppingCart } from "react-icons/ai";
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, addToCart }) => {
+  const handleAddToCart = () => {
+    addToCart(product);
+  };
+
   return (
     <div className="max-w-xs bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden">
       <a href="#">
@@ -36,12 +40,12 @@ const ProductCard = ({ product }) => {
           <span className="text-2xl font-bold text-gray-900">
             BDT {product.price}
           </span>
-          <a
-            href="#"
+          <button
+            onClick={handleAddToCart} // Call handleAddToCart on click
             className="text-white bg-theme-red hover:bg-theme-black focus:ring-4 focus:outline-none focus:ring-theme-black font-medium rounded-lg text-sm px-4 py-2.5 text-center flex items-center"
           >
             <AiOutlineShoppingCart className="w-5 h-5" />
-          </a>
+          </button>
         </div>
       </div>
     </div>
