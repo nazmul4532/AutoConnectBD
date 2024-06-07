@@ -75,7 +75,7 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route
-          path="/customer/products"
+          path="/customer/dashboard"
           element={ isLoggedIn && role === "customer" ? <ProductsPage /> : <Navigate to="/login" />}
         />
         <Route
