@@ -8,6 +8,12 @@ const OrderSchema = new Schema(
       ref: "User",
       required: true,
     },
+    firstName: {
+      type: String,
+    },
+    lastName: {
+      type: String,
+    },
     company: {
       type: Schema.Types.ObjectId,
       ref: "User",
@@ -15,6 +21,12 @@ const OrderSchema = new Schema(
     cart: {
       type: Schema.Types.ObjectId,
       ref: "Cart",
+    },
+    customerPhone:{
+      type: String,
+    },
+    customerEmail:{
+      type: String,
     },
     products: [
       {
@@ -36,7 +48,7 @@ const OrderSchema = new Schema(
     ],
     totalPrice: {
       type: Number,
-      required: true,
+      // required: true,
     },
     status: {
       type: String,
@@ -58,6 +70,10 @@ const OrderSchema = new Schema(
         type: Date,
     },
     deliveryAddress: {
+      type: String,
+      required: true,
+    },
+    postalCode: {
       type: String,
       required: true,
     },

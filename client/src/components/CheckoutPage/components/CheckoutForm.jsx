@@ -40,8 +40,28 @@ const CheckoutForm = ({cartTotals}) => {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // Handle form submission
+    const cart = JSON.parse(localStorage.getItem("cartProducts"));
+    const accessToken = localStorage.getItem("accessToken");
+    formData.cart = cart;
+    console.log(formData);
+    console.log("Fetching Products");
+    const res = await fetch(`${import.meta.env.VITE_APP_API_URL}/api/order/create-order`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${JSON.parse(accessToken)}`,
+      },
+      body: JSON.stringify({formData}),
+    });  
+
+    if (!res.ok) {
+      throw new Error("Error sending Create Order Request");
+    }else{
+      localStorage.removeItem("cartProducts");
+      window.location.href = "/customer/dashboard";
+    }
     toast.success("Form submitted successfully!");
   };
 

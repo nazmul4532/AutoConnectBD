@@ -4,22 +4,28 @@ const Product = require("../models/productModel");
 
 exports.createOrderFromCart = async (req, res) => {
     try {
-      const { cartId, paymentMethod, deliveryAddress } = req.body;
-      const cart = await Cart.findById(cartId).populate("products.product");
-      if (!cart) {
-        throw new Error("Cart not found");
+      console.log("Creating order from cart");
+      console.log(req.body);
+      let { cart, cashOnDelivery,firstName, lastName, email, phoneNumber, postalCode, paymentMethod, address } = req.body.formData;
+      if(cashOnDelivery){
+        paymentMethod = "cash_on_delivery";
       }
-  
+      console.log(cart);
+      if (!cart) {
+        // throw new Error("Cart not found");
+        res.status(400).json({ message: "Cart not found" });
+      }
       const productsByCompany = {};
-      cart.products.forEach(item => {
-        const companyId = item.product.company.toString();
+      cart.forEach(item => {
+        console.log(item);
+        const companyId = item.company.toString();
         if (!productsByCompany[companyId]) {
           productsByCompany[companyId] = [];
         }
         productsByCompany[companyId].push({
-          product: item.product._id,
+          product: item._id,
           quantity: item.quantity,
-          price: item.product.unitPrice,
+          price: item.unitPrice,
         });
       });
   
@@ -28,19 +34,21 @@ exports.createOrderFromCart = async (req, res) => {
         const companyProducts = productsByCompany[companyId];
         const order = new Order({
           user: req.user._id,
+          firstName: firstName,
+          lastName: lastName,
+          customerEmail: email,
+          customerPhone: phoneNumber,
+          company: companyId,
           products: companyProducts,
           paymentMethod: paymentMethod,
           paymentStatus: paymentMethod === "cash_on_delivery" ? "pending" : "completed",
-          deliveryAddress: deliveryAddress,
+          deliveryAddress: address,
+          postalCode: postalCode,
         });
         await order.save();
         orders.push(order);
       }
       console.log("Orders created successfully:", orders);
-
-      cart.products = [];
-      await cart.save();
-      console.log("Cart cleared after order creation");
   
       res.status(201).json({ message: "Orders created successfully", orders: orders });
     } catch (error) {

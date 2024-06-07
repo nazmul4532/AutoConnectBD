@@ -5,7 +5,7 @@ const { verifyToken, isCustomer, isCompany } = require('../middleware/authMiddle
 
 
 // Route for creating an order from cart
-router.post('/create-order', orderController.createOrderFromCart);
+router.post('/create-order',verifyToken, orderController.createOrderFromCart);
 
 // Route for updating order status
 router.put('/update-order-status', orderController.updateOrderStatus);
@@ -14,6 +14,6 @@ router.put('/update-order-status', orderController.updateOrderStatus);
 router.get('/order-details/:orderId', orderController.getOrderDetails);
 
 // Route for fetching user orders with pagination
-router.get('/user-orders', orderController.getUserOrders);
+router.get('/user-orders', orderController.getOrders);
 
 module.exports = router;
