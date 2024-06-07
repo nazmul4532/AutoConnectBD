@@ -1,6 +1,6 @@
 import React from "react";
 
-const ReviewStep = ({ formData }) => {
+const ReviewStep = ({ formData, cartTotals }) => {
   return (
     <div>
       {/* Shipping Details */}
@@ -78,7 +78,15 @@ const ReviewStep = ({ formData }) => {
         <h4 className="text-lg font-medium text-theme-red font-extrabold">
           Order Information
         </h4>
-        {/* Add order summary details here */}
+        <p>
+          <strong>Subtotal Cost:</strong> ${cartTotals.subtotal.toFixed(2)}
+        </p>
+        <p>
+          <strong>Shipping Cost:</strong> ${cartTotals.shippingCost.toFixed(2)}
+        </p>
+        <p>
+          <strong>Total Cost:</strong> ${cartTotals.total.toFixed(2)}
+        </p>
       </div>
     </div>
   );

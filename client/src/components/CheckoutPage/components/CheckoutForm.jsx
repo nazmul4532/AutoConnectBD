@@ -7,7 +7,7 @@ import ShippingStep from "./ShippingStep";
 import PaymentStep from "./PaymentStep";
 import ReviewStep from "./ReviewStep";
 
-const CheckoutForm = () => {
+const CheckoutForm = ({cartTotals}) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState({
     fullName: "",
@@ -93,7 +93,7 @@ const CheckoutForm = () => {
           {currentStep === 1 && (
             <PaymentStep formData={formData} handleChange={handleChange} />
           )}
-          {currentStep === 2 && <ReviewStep formData={formData} />}
+          {currentStep === 2 && <ReviewStep formData={formData} cartTotals={cartTotals} />}
           <div className="flex justify-between mt-4">
             {currentStep > 0 && (
               <button
