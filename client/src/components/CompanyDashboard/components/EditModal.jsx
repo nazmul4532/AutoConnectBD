@@ -56,25 +56,23 @@ const EditModal = ({ isOpen, onClose, onConfirm, initialProductDetails }) => {
   };
 
   const categoryOptions = [
-    { value: "Sedan", label: "Sedan" },
-    { value: "SUV", label: "SUV" },
-    { value: "Truck", label: "Truck" },
-    { value: "Coupe", label: "Coupe" },
-    { value: "Convertible", label: "Convertible" },
-    { value: "Hatchback", label: "Hatchback" },
-    { value: "Minivan", label: "Minivan" },
-    { value: "Electric", label: "Electric" },
-    { value: "Hybrid", label: "Hybrid" },
+    { value: "Battery", label: "Battery" },
+    { value: "Shock Absorber", label: "Shock Absorber" },
+    { value: "Spark Plug", label: "Spark Plug" },
+    { value: "Gasket", label: "Gasket" },
+    { value: "Insulator", label: "Insulator" },
+    { value: "Oil", label: "Oil" },
+    { value: "Motor Oil", label: "Motor Oil" },
+    { value: "Steering Oil", label: "Steering Oil" },
+    { value: "Control Arm", label: "Control Arm" },
+    { value: "Tyres", label: "Tyres" },
+    { value: "Commercial", label: "Commercial" },
+    { value: "Passenger", label: "Passenger" },
+    { value: "MotorCycle", label: "MotorCycle" },
     { value: "Engine Parts", label: "Engine Parts" },
     { value: "Brakes", label: "Brakes" },
     { value: "Suspension", label: "Suspension" },
     { value: "Exhaust", label: "Exhaust" },
-    { value: "Tires", label: "Tires" },
-    { value: "Batteries", label: "Batteries" },
-    { value: "Lighting", label: "Lighting" },
-    { value: "Interior", label: "Interior" },
-    { value: "Exterior", label: "Exterior" },
-    // Add more default categories as needed
   ];
 
   if (!isOpen) return null;

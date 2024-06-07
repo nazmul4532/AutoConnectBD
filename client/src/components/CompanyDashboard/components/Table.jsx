@@ -200,7 +200,7 @@ const Table = ({ api, data, headers }) => {
             >
               <td className="p-4 text-center">
                 <img
-                  src={item.image}
+                  src={item.img[0]}
                   className="w-16 md:w-32 max-w-full max-h-full"
                   alt={item.name}
                 />
