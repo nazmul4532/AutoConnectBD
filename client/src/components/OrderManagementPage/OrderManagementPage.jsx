@@ -39,21 +39,7 @@ const OrderManagmentPage = () => {
               link: "/company/order-management",
               icon: <AiOutlineOrderedList />,
             },
-            // {
-            //   title: "Stock History",
-            //   link: "/company/stock-history",
-            //   icon: <AiOutlineHistory />,
-            // },
-            {
-              title: "Profile",
-              link: "/company/profile",
-              icon: <AiOutlineProfile />,
-            },
-            {
-              title: "Settings",
-              link: "/company/settings",
-              icon: <AiOutlineSetting />,
-            },
+            
             { title: "Logout", link: "/logout", icon: <AiOutlineLogin /> },
           ]}
         />

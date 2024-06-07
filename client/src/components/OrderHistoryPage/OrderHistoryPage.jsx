@@ -31,7 +31,7 @@ const OrderHistoryPage = () => {
           menuItems={[
             {
               title: "Products",
-              link: "/customer/dashboard",
+              link: "/customer/products",
               icon: <AiOutlineOrderedList />,
             },
             {
@@ -39,16 +39,7 @@ const OrderHistoryPage = () => {
               link: "/customer/order-history",
               icon: <AiOutlineHistory />,
             },
-            // {
-            //   title: "Stock History",
-            //   link: "/company/stock-history",
-            //   icon: <AiOutlineHistory />,
-            // },
-            {
-              title: "Profile",
-              link: "/company/profile",
-              icon: <AiOutlineProfile />,
-            },
+
             { title: "Logout", link: "/logout", icon: <AiOutlineLogin /> },
           ]}
         />
@@ -57,7 +48,7 @@ const OrderHistoryPage = () => {
           <Table
             api={`${import.meta.env.VITE_APP_API_URL}/api/product`}
             data={[]}
-            headers={["Order ID", "Date", "Status", "Total", "Details",]}
+            headers={["Order ID", "Date", "Status", "Total", "Details"]}
           />
         </div>
       </div>
