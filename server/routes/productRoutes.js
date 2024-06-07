@@ -49,6 +49,7 @@ router.get("/products", verifyToken, productController.getAllProductDetails);
 
 
 router.post('/add-rating', verifyToken, productController.addRating);
+router.get('/searchProducts', productController.searchProducts)
 
 
 module.exports = router;

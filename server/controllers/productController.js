@@ -304,3 +304,43 @@ exports.getAllProductDetails = async (req, res) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 };
+
+// Controller function to search products based on query parameters
+exports.searchProducts = async (req, res) => {
+  try {
+    const { name, category, minPrice, maxPrice, minRating } = req.query;
+    const query = {};
+
+    // Filter by name (case-insensitive)
+    if (name) {
+      query.name = { $regex: name, $options: "i" };
+    }
+
+    // Filter by category
+    if (category) {
+      query.category = { $in: category.split(",") };
+    }
+
+    // Filter by price range
+    if (minPrice || maxPrice) {
+      query.unitPrice = {};
+      if (minPrice) {
+        query.unitPrice.$gte = Number(minPrice);
+      }
+      if (maxPrice) {
+        query.unitPrice.$lte = Number(maxPrice);
+      }
+    }
+
+    // Filter by minimum rating
+    if (minRating) {
+      query.averageRating = { $gte: Number(minRating) };
+    }
+
+    const products = await Product.find(query);
+
+    res.status(200).json(products);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
