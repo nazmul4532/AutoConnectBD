@@ -14,6 +14,7 @@ import LogOutPage from "./components/Logout/LogoutPage";
 import LandingPage from "./components/LandingPage/LandingPage";
 import ProductsPage from "./components/ProductsPage/ProductsPage";
 import CheckoutPage from "./components/CheckoutPage/CheckoutPage";
+import OrderManagementPage from "./components/OrderManagementPage/OrderManagementPage";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -86,6 +87,7 @@ function App() {
         <Route path="/landingPage" element={<LandingPage/>} />
         <Route path="/customer/products" element={<ProductsPage/>} />
         <Route path="/customer/checkout" element={<CheckoutPage/>} />
+        <Route path="/company/order-management" element={<OrderManagementPage/>} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
