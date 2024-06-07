@@ -6,6 +6,7 @@ import {
   AiOutlineProfile,
   AiOutlineSetting,
   AiOutlineLogin,
+  AiOutlineOrderedList,
 } from "react-icons/ai";
 import Sidebar from "./components/Sidebar";
 import Table from "./components/Table";
@@ -36,22 +37,27 @@ const CompanyDashboard = () => {
           menuItems={[
             {
               title: "Dashboard",
-              link: "/product-manufacturer/dashboard",
+              link: "/company/dashboard",
               icon: <AiOutlineDashboard />,
             },
             {
-              title: "Stock History",
-              link: "/product-manufacturer/stock-history",
-              icon: <AiOutlineHistory />,
+              title: "Order Management",
+              link: "/company/order-management",
+              icon: <AiOutlineOrderedList />,
             },
+            // {
+            //   title: "Stock History",
+            //   link: "/company/stock-history",
+            //   icon: <AiOutlineHistory />,
+            // },
             {
               title: "Profile",
-              link: "/product-manufacturer/profile",
+              link: "/company/profile",
               icon: <AiOutlineProfile />,
             },
             {
               title: "Settings",
-              link: "/product-manufacturer/settings",
+              link: "/company/settings",
               icon: <AiOutlineSetting />,
             },
             { title: "Logout", link: "/logout", icon: <AiOutlineLogin /> },
