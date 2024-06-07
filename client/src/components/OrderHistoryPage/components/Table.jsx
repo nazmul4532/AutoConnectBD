@@ -10,8 +10,8 @@ const Table = ({ api, data, headers }) => {
   const [pagination, setPagination] = useState({});
   const [orders, setOrders] = useState([
     {
-      _id: "1",
-      customerName: "John Doe",
+      _id: "6662e75f9a3d24dcdb044433",
+      customerName: "Nazmul Hossain",
       date: "2021-09-01",
       totalPrice: 150.75,
       orderStatus: "Pending",

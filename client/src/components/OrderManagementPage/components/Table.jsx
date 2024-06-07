@@ -53,6 +53,30 @@ const Table = ({ api, data, headers }) => {
     }
   };
 
+  const updateStatus = async (orderId, newStatus) => {
+    try {
+    let formData = new FormData();
+    formData.append("orderId", orderId);
+    formData.append("status", newStatus);
+    const res = await fetch(`${api}/update-order-status`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${JSON.parse(accessToken)}`,
+      },
+      body: JSON.stringify(formData),
+    });
+    if (!res.ok) {
+      throw new Error("Error updating order status");
+    }
+    const { orders, pagination } = await res.json();
+    setOrders(orders);
+    setPagination(pagination);
+  } catch (error) {
+    console.error("Error fetching orders:", error);
+    toast.error("Error fetching orders");
+  }
+  }
+
   useEffect(() => {
     fetchOrders();
   }, [currentPage]);
@@ -116,7 +140,15 @@ const Table = ({ api, data, headers }) => {
           ? { ...order, orderStatus: selectedStatus } // Use selectedStatus
           : order
       )
+
+
     );
+
+    //give api here
+    console.log(selectedOrderId, selectedStatus);
+    updateStatus(selectedOrderId, selectedStatus);
+
+
     toast.success(`Status updated successfully`);
     setIsConfirmationOpen(false); // Close the confirmation modal
   };
@@ -154,7 +186,7 @@ const Table = ({ api, data, headers }) => {
                 <span className="text-black">{item._id}</span>
               </td>
               <td className="px-6 py-4 text-center">
-                <span className="text-black">{item.customerEmail}</span>
+                <span className="text-black">{item.firstName +" "+item.lastName}</span>
               </td>
               <td className="px-6 py-4 text-center">
                 <div className="relative inline-block">

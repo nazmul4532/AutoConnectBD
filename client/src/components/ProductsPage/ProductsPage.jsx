@@ -10,14 +10,15 @@ import ProductList from "./components/ProductList";
 import CartOverlay from "./components/CartOverlay";
 
 const categories = [
-  { id: 1, name: "Electronics" },
-  { id: 2, name: "Clothing" },
-  { id: 3, name: "Home & Garden" },
+  { id: 1, name: "Battery" },
+  { id: 2, name: "Car Parts" },
+  { id: 3, name: "Oil" },
 ];
 
 const links = [
   { title: "Products", url: "/customer/products" },
-  { title: "Appointments", url: "/customer/appointments" },
+  // { title: "Appointments", url: "/customer/appointments" },
+  { title: "Order History", url: "/customer/order-history" },
   { title: "Logout", url: "/logout" },
 ];
 

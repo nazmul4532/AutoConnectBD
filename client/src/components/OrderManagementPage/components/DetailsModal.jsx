@@ -32,7 +32,7 @@ const DetailsModal = ({ isOpen, onClose, order }) => {
               </p>
               <p>
                 <span className="font-semibold">Customer:</span>{" "}
-                {order.customerName}
+                {order.firstName +" "+ order.lastName}
               </p>
               <p>
                 <span className="font-semibold">Total Price:</span> BDT{" "}
@@ -40,13 +40,13 @@ const DetailsModal = ({ isOpen, onClose, order }) => {
               </p>
               <p>
                 <span className="font-semibold">Order Status:</span>{" "}
-                {order.orderStatus}
+                {order.status}
               </p>
               <p className="font-semibold">Order List:</p>
               <ul>
-                {order.orderList.map((product) => (
-                  <li key={product.productId}>
-                    {product.productName} - Quantity: {product.quantity}
+                {order.products.map((product) => (
+                  <li key={product._id}>
+                    {product._id} - Quantity: {product.quantity}
                   </li>
                 ))}
               </ul>

@@ -95,10 +95,14 @@ exports.createOrderBuyNow = async (req, res) => {
 
 exports.updateOrderStatus = async (req, res) => {
     try {
+      console.log("Updating order status");
       const { orderId, status } = req.body;
+      console.log(req.body);
+      console.log(orderId, status);
   
       const order = await Order.findById(orderId);
       if (!order) {
+        console.log("Order not found");
         return res.status(404).json({ message: "Order not found" });
       }
 
