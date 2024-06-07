@@ -36,7 +36,7 @@ const OrderHistoryPage = () => {
             },
             {
               title: "Order History",
-              link: "/customer/order-hsitory",
+              link: "/customer/order-history",
               icon: <AiOutlineHistory />,
             },
             // {
